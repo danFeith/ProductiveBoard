@@ -9,25 +9,25 @@ using TaskMan.Models;
 
 namespace TaskMan.Controllers
 {
-    public class TasksController : Controller
+    public class TaskTypesController : Controller
     {
-        private readonly ILogger<TasksController> _logger;
+        private readonly ILogger<TaskTypesController> _logger;
         private readonly ApplicationDbContext _context;
 
-        public TasksController(ILogger<TasksController> logger, ApplicationDbContext context)
+        public TaskTypesController(ILogger<TaskTypesController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
         }
 
-        // GET /Tasks
+        // GET /TaskTypes
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tasks.ToListAsync());
+            return View(await _context.TaskTypes.ToListAsync());
         }
 
-        // GET /Tasks/Details/{id}
+        // GET /TaskTypes/Details/{id}
         [HttpGet]
         public async Task<IActionResult> Details(long? id)
         {
@@ -36,38 +36,38 @@ namespace TaskMan.Controllers
                 return NotFound();
             }
 
-            Models.Task task = await _context.Tasks.Include(e => e.Status).FirstOrDefaultAsync(m => m.Id == id);
-            if (task == null)
+            TaskType taskType = await _context.TaskTypes.FirstOrDefaultAsync(e => e.Id == id);
+            if (taskType == null)
             {
                 return NotFound();
             }
 
-            return View(task);
+            return View(taskType);
         }
 
-        // POST /Tasks
+        // POST /TaskTypes
         [HttpPost]
-        public async Task<IActionResult> Create(Models.Task task)
+        public async Task<IActionResult> Create(TaskType taskType)
         {
-            _context.Add(task);
+            _context.Add(taskType);
             await _context.SaveChangesAsync();
-            return View(task);
+            return View(taskType);
         }
 
-        // PUT /Tasks
+        // PUT /TaskTypes/Update
         [HttpPut]
-        public async Task<IActionResult> Update(Models.Task task)
+        public async Task<IActionResult> Update(TaskType taskType)
         {
-            _context.Update(task);
+            _context.Update(taskType);
             await _context.SaveChangesAsync();
-            return View(task);
+            return View(taskType);
         }
 
-        // DELETE /Delete/{id}
+        // DELETE /TaskTypes/Delete/{id}
         [HttpDelete]
-        public async Task<IActionResult> Delete(long taskId)
+        public async Task<IActionResult> Delete(long taskTypeId)
         {
-            _context.Remove(taskId);
+            _context.Remove(new TaskType() { Id = taskTypeId });
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

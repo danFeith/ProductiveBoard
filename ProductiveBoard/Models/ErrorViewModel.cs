@@ -1,6 +1,6 @@
 using System;
 
-namespace ProductiveBoard.Models
+namespace TaskMan.Models
 {
     public class ErrorViewModel
     {

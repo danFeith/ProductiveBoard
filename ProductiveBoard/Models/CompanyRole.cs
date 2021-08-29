@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace TaskMan.Models
 {
-    public class TaskStatus
+    public class Role
     {
         public long Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
+        public Boolean IsManager { get; set; }
     }
 }

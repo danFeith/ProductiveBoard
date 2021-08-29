@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProductiveBoard.Data;
+using TaskMan.Data;
 
-namespace ProductiveBoard.Data.Migrations
+namespace TaskMan.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -219,7 +219,7 @@ namespace ProductiveBoard.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ProductiveBoard.Models.Task", b =>
+            modelBuilder.Entity("TaskMan.Models.Task", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,7 +242,7 @@ namespace ProductiveBoard.Data.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("ProductiveBoard.Models.TaskStatus", b =>
+            modelBuilder.Entity("TaskMan.Models.TaskStatus", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -308,9 +308,9 @@ namespace ProductiveBoard.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductiveBoard.Models.Task", b =>
+            modelBuilder.Entity("TaskMan.Models.Task", b =>
                 {
-                    b.HasOne("ProductiveBoard.Models.TaskStatus", "Status")
+                    b.HasOne("TaskMan.Models.TaskStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)

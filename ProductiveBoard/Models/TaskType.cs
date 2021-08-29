@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TaskMan.Models
 {
-    public class TaskStatus
+    public class TaskType
     {
         public long Id { get; set; }
         public string Name { get; set; }

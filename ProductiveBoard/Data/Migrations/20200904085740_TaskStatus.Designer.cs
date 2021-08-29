@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProductiveBoard.Data;
+using TaskMan.Data;
 
-namespace ProductiveBoard.Data.Migrations
+namespace TaskMan.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200904085740_TaskStatus")]
@@ -221,7 +221,7 @@ namespace ProductiveBoard.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ProductiveBoard.Models.Task", b =>
+            modelBuilder.Entity("TaskMan.Models.Task", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,7 +239,7 @@ namespace ProductiveBoard.Data.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("ProductiveBoard.Models.TaskStatus", b =>
+            modelBuilder.Entity("TaskMan.Models.TaskStatus", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

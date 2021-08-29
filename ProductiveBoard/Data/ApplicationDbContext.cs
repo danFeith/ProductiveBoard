@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ProductiveBoard.Models;
+using TaskMan.Models;
 
-namespace ProductiveBoard.Data
+namespace TaskMan.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
