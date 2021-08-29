@@ -9,23 +9,25 @@ using ProductiveBoard.Models;
 
 namespace ProductiveBoard.Controllers
 {
-    public class TaskController : Controller
+    public class CompanyRolesController : Controller
     {
-        private readonly ILogger<TaskController> _logger;
+        private readonly ILogger<CompanyRolesController> _logger;
         private readonly ApplicationDbContext _context;
 
-        public TaskController(ILogger<TaskController> logger, ApplicationDbContext context)
+        public CompanyRolesController(ILogger<CompanyRolesController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
         }
 
+        // GET /CompanyRoles
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tasks.ToListAsync());
+            return View(await _context.CompanyRoles.ToListAsync());
         }
 
+        // GET /CompanyRoles/Details/{id}
         [HttpGet]
         public async Task<IActionResult> Details(long? id)
         {
@@ -34,35 +36,38 @@ namespace ProductiveBoard.Controllers
                 return NotFound();
             }
 
-            Models.Task task = await _context.Tasks.Include(e => e.Status).FirstOrDefaultAsync(m => m.Id == id);
-            if (task == null)
+            CompanyRole role = await _context.CompanyRoles.FirstOrDefaultAsync(e => e.Id == id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(task);
+            return View(role);
         }
 
+        // POST /CompanyRoles
         [HttpPost]
-        public async Task<IActionResult> Create(Models.Task task)
+        public async Task<IActionResult> Create(CompanyRole role)
         {
-            _context.Add(task);
+            _context.Add(role);
             await _context.SaveChangesAsync();
-            return View(task);
+            return View(role);
         }
 
+        // PUT /CompanyRoles/Update
         [HttpPut]
-        public async Task<IActionResult> Update(Models.Task task)
+        public async Task<IActionResult> Update(CompanyRole role)
         {
-            _context.Update(task);
+            _context.Update(role);
             await _context.SaveChangesAsync();
-            return View(task);
+            return View(role);
         }
 
+        // DELETE /CompanyRoles/Delete/{id}
         [HttpDelete]
-        public async Task<IActionResult> Delete(long taskId)
+        public async Task<IActionResult> Delete(long roleId)
         {
-            _context.Remove(taskId);
+            _context.Remove(new CompanyRole() { Id = roleId });
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
