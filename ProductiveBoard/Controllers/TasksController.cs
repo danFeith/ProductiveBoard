@@ -54,7 +54,7 @@ namespace ProductiveBoard.Controllers
             return View(task);
         }
 
-        // PUT /Tasks
+        // PUT /Tasks/Update
         [HttpPut]
         public async Task<IActionResult> Update(Models.Task task)
         {
@@ -63,7 +63,7 @@ namespace ProductiveBoard.Controllers
             return View(task);
         }
 
-        // DELETE /Delete/{id}
+        // DELETE /Tasks/Delete/{id}
         [HttpDelete]
         public async Task<IActionResult> Delete(long taskId)
         {

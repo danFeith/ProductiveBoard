@@ -11,6 +11,7 @@ namespace ProductiveBoard.Data
     {
         public DbSet<Task> Tasks { get; set; }
         public DbSet<CompanyRole> CompanyRoles { get; set; }
+        public DbSet<TaskType> TaskTypes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
