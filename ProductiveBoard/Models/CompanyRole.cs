@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProductiveBoard.Models
 {
-    public class Role
+    public class CompanyRole
     {
         public long Id { get; set; }
         public string Title { get; set; }
