@@ -14,5 +14,8 @@ namespace ProductiveBoard.Models
         public string Description { get; set; }
         public long StatusId { get; set; }
         public TaskStatus Status { get; set; }
+        public long TypeId { get; set; }
+        public TaskType Type { get; set; }
+
     }
 }

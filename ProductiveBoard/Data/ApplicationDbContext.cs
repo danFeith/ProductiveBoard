@@ -31,10 +31,20 @@ namespace ProductiveBoard.Data
                 .HasOne(e => e.Status)
                 .WithMany()
                 .HasForeignKey(e => e.StatusId);
+            modelBuilder.Entity<Task>()
+                .HasOne(e => e.Type)
+                .WithMany()
+                .HasForeignKey(e => e.TypeId);
 
             modelBuilder.Entity<TaskStatus>()
                 .HasKey(e => e.Id);
             modelBuilder.Entity<TaskStatus>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<TaskType>()
+                .HasKey(e => e.Id);
+            modelBuilder.Entity<TaskType>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
 
