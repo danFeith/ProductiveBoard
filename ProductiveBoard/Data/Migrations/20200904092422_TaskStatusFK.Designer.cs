@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TaskMan.Data;
+using ProductiveBoard.Data;
 
-namespace TaskMan.Data.Migrations
+namespace ProductiveBoard.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200904092422_TaskStatusFK")]
@@ -221,7 +221,7 @@ namespace TaskMan.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TaskMan.Models.Task", b =>
+            modelBuilder.Entity("ProductiveBoard.Models.Task", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,7 +244,7 @@ namespace TaskMan.Data.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("TaskMan.Models.TaskStatus", b =>
+            modelBuilder.Entity("ProductiveBoard.Models.TaskStatus", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -310,9 +310,9 @@ namespace TaskMan.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TaskMan.Models.Task", b =>
+            modelBuilder.Entity("ProductiveBoard.Models.Task", b =>
                 {
-                    b.HasOne("TaskMan.Models.TaskStatus", "Status")
+                    b.HasOne("ProductiveBoard.Models.TaskStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)

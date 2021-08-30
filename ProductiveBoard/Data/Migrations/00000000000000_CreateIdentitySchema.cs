@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TaskMan.Data.Migrations
+namespace ProductiveBoard.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

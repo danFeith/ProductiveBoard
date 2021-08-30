@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TaskMan.Models;
+using ProductiveBoard.Models;
 
-namespace TaskMan.Data
+namespace ProductiveBoard.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<CompanyRole> CompanyRoles { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -31,11 +32,16 @@ namespace TaskMan.Data
                 .HasForeignKey(e => e.StatusId);
 
             modelBuilder.Entity<TaskStatus>()
-            .HasKey(e => e.Id);
+                .HasKey(e => e.Id);
             modelBuilder.Entity<TaskStatus>()
-            .Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<CompanyRole>()
+                 .HasKey(e => e.Id);
+            modelBuilder.Entity<CompanyRole>()
+                 .Property(e => e.Id)
+                 .ValueGeneratedOnAdd();
         }
     }
 }

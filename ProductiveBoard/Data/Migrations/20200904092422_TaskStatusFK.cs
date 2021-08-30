@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TaskMan.Data.Migrations
+namespace ProductiveBoard.Data.Migrations
 {
     public partial class TaskStatusFK : Migration
     {

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TaskMan.Models;
+using ProductiveBoard.Models;
 
-namespace TaskMan.Controllers
+namespace ProductiveBoard.Controllers
 {
     public class HomeController : Controller
     {

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TaskMan.Models
+namespace ProductiveBoard.Models
 {
     public class Task
     {

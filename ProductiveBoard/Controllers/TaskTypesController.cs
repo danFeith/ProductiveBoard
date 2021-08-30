@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TaskMan.Data;
-using TaskMan.Models;
+using ProductiveBoard.Data;
+using ProductiveBoard.Models;
 
-namespace TaskMan.Controllers
+namespace ProductiveBoard.Controllers
 {
     public class TaskTypesController : Controller
     {
