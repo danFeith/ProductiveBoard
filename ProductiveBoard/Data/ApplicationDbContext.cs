@@ -13,6 +13,8 @@ namespace ProductiveBoard.Data
         public DbSet<CompanyRole> CompanyRoles { get; set; }
         public DbSet<TaskType> TaskTypes { get; set; }
 
+        public DbSet<TaskStatus> TaskStatuses { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -35,6 +37,10 @@ namespace ProductiveBoard.Data
                 .HasOne(e => e.Type)
                 .WithMany()
                 .HasForeignKey(e => e.TypeId);
+            modelBuilder.Entity<Task>()
+                .HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<TaskStatus>()
                 .HasKey(e => e.Id);

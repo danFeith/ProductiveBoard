@@ -55,7 +55,7 @@ namespace ProductiveBoard.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string title, string description)
+        public IActionResult Create(Models.Task task)
         {
             // Add Create in db...
             return RedirectToAction("Index");

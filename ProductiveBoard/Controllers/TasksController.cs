@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
@@ -24,7 +25,25 @@ namespace ProductiveBoard.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tasks.ToListAsync());
+            List<TaskType> taskTypes = await _context.TaskTypes.ToListAsync();
+            List<Models.TaskStatus> taskStatuses = await _context.TaskStatuses.ToListAsync();
+            List<Microsoft.AspNetCore.Identity.IdentityUser> users = await _context.Users.ToListAsync();
+            List<Models.Task> tasks = await _context.Tasks.ToListAsync();
+            for (int currTaskIndex = 0; currTaskIndex < tasks.Count; currTaskIndex++)
+            {
+                for (int currUserIndex = 0; currUserIndex < taskTypes.Count; currUserIndex++)
+                {
+                    if (tasks[currTaskIndex].UserId == users[currUserIndex].Id)
+                    {
+                        tasks[currTaskIndex].User = new User();
+                        tasks[currTaskIndex].User.Id = users[currUserIndex].Id;
+                        tasks[currTaskIndex].User.UserName = users[currUserIndex].UserName;
+                    }
+                }
+            }
+
+            ViewBag.tasks = tasks;
+            return View();
         }
 
         // GET /Tasks/Details/{id}
@@ -51,25 +70,34 @@ namespace ProductiveBoard.Controllers
         {
             _context.Add(task);
             await _context.SaveChangesAsync();
-            return View(task);
+            return RedirectToAction(nameof(Index));
         }
 
         // PUT /Tasks/Update
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Update(Models.Task task)
         {
             _context.Update(task);
             await _context.SaveChangesAsync();
-            return View(task);
+            return RedirectToAction(nameof(Index));
         }
 
         // DELETE /Tasks/Delete/{id}
-        [HttpDelete]
-        public async Task<IActionResult> Delete(long taskId)
+        [HttpPost]
+        public async Task<IActionResult> Delete(long Id)
         {
-            _context.Remove(taskId);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            Models.Task task = new Models.Task() { Id = Id };
+
+            if (Id == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                _context.Remove(task);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }
