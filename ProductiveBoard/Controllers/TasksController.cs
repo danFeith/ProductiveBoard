@@ -132,7 +132,7 @@ namespace ProductiveBoard.Controllers
             return View();
         }
 
-        private async Task<List<IUser>> GetAuth()
+        public async Task<List<IUser>> GetAuth()
         {
             List<IdentityRole> roles = await _context.Roles.ToListAsync();
 

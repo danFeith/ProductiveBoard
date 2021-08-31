@@ -1,7 +1,11 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function () {
+    var canvas = document.getElementById("title");
+    var ctx = canvas.getContext("2d");
+    ctx.font = "30px Arial";
+    ctx.strokeStyle = "white";
+    ctx.strokeText("ProductiveBoard", 10, 50);
+});
 
-// Write your JavaScript code.
 const API_KEY = '0dd9af9e62914962bee54928200709';
 let isHot;
 let isDay;
@@ -27,3 +31,29 @@ $.get(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=Tel-Aviv`, (d
 
     $('#greetings').html(`${prefixString}${$('#greetings').html()}`);
 });
+
+function deleteGeneric(name, formSubmit='') {
+    swal({
+        title: "Are you sure?",
+        text: `Once deleted, you will not be able to recover this ${name}!`,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                if (formSubmit != '') {
+                    $(`#delete-${name}-${formSubmit}`).submit();
+                } else {
+                    $(`#delete-${name}`).submit();
+                }
+
+                swal(`${name} has been deleted successfully`, {
+                    icon: "success",
+                });
+
+            } else {
+                swal("The action has been aborted.");
+            }
+        });
+}

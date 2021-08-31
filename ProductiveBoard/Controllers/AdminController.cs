@@ -33,8 +33,7 @@ namespace ProductiveBoard.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            List<IdentityUser> users = await _context.Users.ToListAsync();
-            ViewBag.users = users;
+            await GetAuth();
 
             return View();
         }
@@ -201,6 +200,76 @@ namespace ProductiveBoard.Controllers
             _context.Update(status);
             await _context.SaveChangesAsync();
             return RedirectToAction("ManageStatus");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserRole(IdentityUserRole<string> UserRole)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+
+            if (HttpContext.Session.GetString("isManager") == "0")
+            {
+                return RedirectToAction("Index", "Tasks");
+            }
+            
+            
+            _context.Update(UserRole);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+            
+        }
+
+        public async Task<List<IUser>> GetAuth()
+        {
+            List<IdentityRole> roles = await _context.Roles.ToListAsync();
+
+            ViewBag.roles = roles;
+
+            List<IdentityUserRole<string>> userRoles = await _context.UserRoles.ToListAsync();
+            List<IdentityUser> users = await _context.Users.ToListAsync();
+            List<IUser> extendedUsers = new List<IUser>();
+
+            for (int currUser = 0; currUser < users.Count; currUser++)
+            {
+                for (int currUserRole = 0; currUserRole < userRoles.Count; currUserRole++)
+                {
+                    if (users[currUser].Id == userRoles[currUserRole].UserId)
+                    {
+                        for (int currRole = 0; currRole < roles.Count; currRole++)
+                        {
+                            if (roles[currRole].Id == userRoles[currUserRole].RoleId)
+                            {
+                                bool isManager = roles[currRole].Id == "1";
+
+                                extendedUsers.Add(new IUser(userRoles[currUserRole].RoleId, userRoles[currUserRole].UserId, users[currUser].Email, roles[currRole].Name, isManager));
+                            }
+                        }
+                    }
+                }
+            }
+            for (int currUser = 0; currUser < extendedUsers.Count; currUser++)
+            {
+                if (User.Identity.Name == extendedUsers[currUser].Email)
+                {
+                    if (extendedUsers[currUser].isManager)
+                    {
+                        ViewBag.isManager = true;
+                        HttpContext.Session.SetString("isManager", "1");
+                    }
+                    else
+                    {
+                        ViewBag.isManager = false;
+                        HttpContext.Session.SetString("isManager", "0");
+                    }
+                }
+            }
+
+            ViewBag.users = users;
+            ViewBag.extendedUsers = extendedUsers;
+            return extendedUsers;
         }
 
     }

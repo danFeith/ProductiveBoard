@@ -27,10 +27,10 @@ else
                     <th scope="row">@(i + 1)</th>
                     <td>@ViewBag.types[i].Name</td>
                     <td style="text-align:center;">
-                        <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="DeleteType">
+                        <form id="delete-type-@ViewBag.types[i].Id" method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="DeleteType">
                             <button type="button" data-toggle="modal" data-target="#edit-type" class="btn btn-primary" style="padding: 1px 10px;" onclick="fillType('@ViewBag.types[i].Name', '@ViewBag.types[i].Id')">Edit</button>
                             <input type="hidden" name="Id" value="@ViewBag.types[i].Id" />
-                            <button type="submit" class="btn btn-danger" style="padding: 1px 10px;">Delete</button>
+                            <button type="button" class="btn btn-danger" style="padding: 1px 10px;" onclick="deleteGeneric('type', '@ViewBag.types[i].Id')">Delete</button>
                         </form>
                     </td>
                 </tr>
