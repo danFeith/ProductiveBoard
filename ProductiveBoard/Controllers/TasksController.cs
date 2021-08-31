@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProductiveBoard.Controllers
 {
@@ -25,13 +26,18 @@ namespace ProductiveBoard.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             List<TaskType> taskTypes = await _context.TaskTypes.ToListAsync();
             List<Models.TaskStatus> taskStatuses = await _context.TaskStatuses.ToListAsync();
-            List<Microsoft.AspNetCore.Identity.IdentityUser> users = await _context.Users.ToListAsync();
+            List<IdentityUser> users = await _context.Users.ToListAsync();
             List<Models.Task> tasks = await _context.Tasks.ToListAsync();
             for (int currTaskIndex = 0; currTaskIndex < tasks.Count; currTaskIndex++)
             {
-                for (int currUserIndex = 0; currUserIndex < taskTypes.Count; currUserIndex++)
+                for (int currUserIndex = 0; currUserIndex < users.Count; currUserIndex++)
                 {
                     if (tasks[currTaskIndex].UserId == users[currUserIndex].Id)
                     {

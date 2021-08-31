@@ -1,30 +1,36 @@
 ﻿
+@using Microsoft.AspNetCore.Identity
+
 @{
     ViewData["Title"] = "Home Page";
 }
-@model ProductiveBoard.Models.Task
 
-<div class="row">
-    @for (var i = 0; ViewBag.tasks != null && i < ViewBag.tasks.Count; i++)
-    {
-        <div class="row col-xl-3 col-lg-3">
-            <div class="card" style="margin:10px; width:100%;">
-                <div class="card-body" style="margin-top: 23px;">
-                    <span class="badge badge-pill badge-secondary" style="position:absolute;right:5px; top:5px;">@ViewBag.tasks[i].Type.Name</span>
-                    <span class="badge badge-pill badge-primary" style="position:absolute;left:5px; top:5px; background-color:#3f51b5">@ViewBag.tasks[i].Status.Name</span>
-                    <h5 class="card-title">@ViewBag.tasks[i].Title</h5>
-                    <p class="card-text" style="padding-bottom: 30px;">@ViewBag.tasks[i].Description</p>
-                    <button style="position:absolute; left:10px; bottom:10px;" type="button" class="btn btn-link" data-toggle="modal" data-target="#edit-task" onclick="fillValues('@ViewBag.tasks[i].Title', '@ViewBag.tasks[i].Description', '@ViewBag.tasks[i].Id', '@ViewBag.tasks[i].StatusId', '@ViewBag.tasks[i].TypeId')">Edit</button>
-                    <form method="post" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Delete">
-                        <input type="hidden" name="Id" value="@ViewBag.tasks[i].Id" />
-                        <button style="position:absolute; right:10px; bottom:10px;" type="submit" class="btn btn-link">Delete</button>
-                    </form>
-                    <!--<a href="#" class="card-link">Delete</a>-->
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model ProductiveBoard.Models.Task
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="row">
+        @for (var i = 0; ViewBag.tasks != null && i < ViewBag.tasks.Count; i++)
+        {
+            <div class="row col-xl-3 col-lg-3">
+                <div class="card" style="margin:10px; width:100%;">
+                    <div class="card-body" style="margin-top: 23px;">
+                        <span class="badge badge-pill badge-secondary" style="position:absolute;right:5px; top:5px;">@ViewBag.tasks[i].Type.Name</span>
+                        <span class="badge badge-pill badge-primary" style="position:absolute;left:5px; top:5px; background-color:#3f51b5">@ViewBag.tasks[i].Status.Name</span>
+                        <h5 class="card-title">@ViewBag.tasks[i].Title</h5>
+                        <p class="card-text" style="padding-bottom: 30px;">@ViewBag.tasks[i].Description</p>
+                        <button style="position:absolute; left:10px; bottom:10px;" type="button" class="btn btn-link" data-toggle="modal" data-target="#edit-task" onclick="fillValues('@ViewBag.tasks[i].Title', '@ViewBag.tasks[i].Description', '@ViewBag.tasks[i].Id', '@ViewBag.tasks[i].StatusId', '@ViewBag.tasks[i].TypeId')">Edit</button>
+                        <form method="post" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Delete">
+                            <input type="hidden" name="Id" value="@ViewBag.tasks[i].Id" />
+                            <button style="position:absolute; right:10px; bottom:10px;" type="submit" class="btn btn-link">Delete</button>
+                        </form>
+                        <!--<a href="#" class="card-link">Delete</a>-->
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-task" style="position: fixed; left:60px; bottom:40px;">
@@ -108,5 +114,10 @@
         </div>
     </div>
 </div>
+}
+else
+{
+    <h3>Unauthorized!</h3>
+}
 
 <script src="~/js/Task/task.js"></script>
