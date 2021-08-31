@@ -16,11 +16,8 @@
             height: 400px;
         }
     </style>
+    <link rel="stylesheet" href="~/css/About.css" />
 </head>
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
-
-<p>Use this area to provide additional information.</p>
 
 <script type='text/javascript'>
 
@@ -87,8 +84,20 @@
 </script>
 <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?branch=release&callback=loadMapScenario' async defer></script>
 
-<div class="row">
-    <div class="col-md-12 map">
-        <div id="myMap" style="width:40%; height:300px;"></div>
+<div class="row desc">
+    <div class="col-lg-5">
+        <h2>ProductiveBoard</h2>
+        <br />
+        <h3>Manage your tasks - The smart way!</h3>
+        <br />
+        <div>Here in ProductiveBoard you can manage and watch yout tasks, set the work for each team member and see statistucs about the tasks.</div>
+        <br />
+        <div>Feel free to contact us at:</div>
+        <br />
+        <div>ProductiveBoard@colman.ac.il</div>
+        <br />
+    </div>
+    <div class="col-lg-7 map">
+        <center><div id="myMap" style="width:70%; height:350px;"></div></center>
     </div>
 </div>
