@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace ProductiveBoard.Controllers
 {
@@ -28,13 +29,23 @@ namespace ProductiveBoard.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
 
+            await GetAuth();
+            List<IdentityUser> users = new List<IdentityUser>();
+            List<IUser> extendedUsers = new List<IUser>();
+            users = ViewBag.users;
+            extendedUsers = ViewBag.extendedUsers;
+
+            ViewBag.extendedUsers = extendedUsers;
             List<TaskType> taskTypes = await _context.TaskTypes.ToListAsync();
             List<Models.TaskStatus> taskStatuses = await _context.TaskStatuses.ToListAsync();
-            List<IdentityUser> users = await _context.Users.ToListAsync();
             List<Models.Task> tasks = await _context.Tasks.ToListAsync();
+
+            ViewBag.users = users;
+            ViewBag.taskTypes = taskTypes;
+            ViewBag.taskStatuses = taskStatuses;
             for (int currTaskIndex = 0; currTaskIndex < tasks.Count; currTaskIndex++)
             {
                 for (int currUserIndex = 0; currUserIndex < users.Count; currUserIndex++)
@@ -104,6 +115,71 @@ namespace ProductiveBoard.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        public IActionResult Statistics()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+
+            if (HttpContext.Session.GetString("isManager") == "0")
+            {
+                return RedirectToAction("Index", "Tasks");
+            }
+
+            return View();
+        }
+
+        private async Task<List<IUser>> GetAuth()
+        {
+            List<IdentityRole> roles = await _context.Roles.ToListAsync();
+
+            ViewBag.roles = roles;
+
+            List<IdentityUserRole<string>> userRoles = await _context.UserRoles.ToListAsync();
+            List<IdentityUser> users = await _context.Users.ToListAsync();
+            List<IUser> extendedUsers = new List<IUser>();
+
+            for (int currUser = 0; currUser < users.Count; currUser++)
+            {
+                for (int currUserRole = 0; currUserRole < userRoles.Count; currUserRole++)
+                {
+                    if (users[currUser].Id == userRoles[currUserRole].UserId)
+                    {
+                        for (int currRole = 0; currRole < roles.Count; currRole++)
+                        {
+                            if (roles[currRole].Id == userRoles[currUserRole].RoleId)
+                            {
+                                bool isManager = roles[currRole].Id == "1";
+
+                                extendedUsers.Add(new IUser(userRoles[currUserRole].RoleId, userRoles[currUserRole].UserId, users[currUser].Email, roles[currRole].Name, isManager));
+                            }
+                        }
+                    }
+                }
+            }
+            for (int currUser = 0; currUser < extendedUsers.Count; currUser++)
+            {
+                if (User.Identity.Name == extendedUsers[currUser].Email)
+                {
+                    if (extendedUsers[currUser].isManager)
+                    {
+                        ViewBag.isManager = true;
+                        HttpContext.Session.SetString("isManager", "1");
+                    }
+                    else
+                    {
+                        ViewBag.isManager = false;
+                        HttpContext.Session.SetString("isManager", "0");
+                    }
+                }
+            }
+
+            ViewBag.users = users;
+            ViewBag.extendedUsers = extendedUsers;
+            return extendedUsers;
         }
     }
 }

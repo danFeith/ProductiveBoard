@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" href="~/css/Statistics/statistics.css" />
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="chart-box chart-background" id="pie_chart">
+            <span style="position: relative; top: 8px; font-weight:bold;">Tasks By Type</span>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="chart-box chart-background" id="bar_chart">
+            <span style="font-weight: bold; position: relative; top: 8px;">Tasks Amount Per User</span>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row" style="justify-content: center;">
+    <div class="chart-box col-lg-6">
+        <div class="chart-background" id="circular_chart">
+            <span style="left: 0; position: absolute; top: 8px; font-weight: bold; width: 100%;">Roles</span>
+        </div>
+    </div>
+</div>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="~/js/Statistics/pie.js"></script>
+<script src="~/js/Statistics/bar.js"></script>
+<script src="~/js/Statistics/circular.js"></script>

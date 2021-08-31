@@ -10,6 +10,11 @@
 @model ProductiveBoard.Models.Task
 @if (SignInManager.IsSignedIn(User))
 {
+    @if (ViewBag.tasks != null && ViewBag.tasks.Count == 0)
+    {
+    <i class="fa fa-list fa-5x" style="text-align: center; width: 100%; position: relative; top: 132px; color: #7a7a7a; font-size: 130px;" aria-hidden="true"></i>
+    <div style="position: relative; top: 132px; text-align: center; width: 100%; font-size: 19px; color: #7a7a7a; font-weight: bold;">No Tasks To Display</div>
+    }
     <div class="row">
         @for (var i = 0; ViewBag.tasks != null && i < ViewBag.tasks.Count; i++)
         {
@@ -19,11 +24,12 @@
                         <span class="badge badge-pill badge-secondary" style="position:absolute;right:5px; top:5px;">@ViewBag.tasks[i].Type.Name</span>
                         <span class="badge badge-pill badge-primary" style="position:absolute;left:5px; top:5px; background-color:#3f51b5">@ViewBag.tasks[i].Status.Name</span>
                         <h5 class="card-title">@ViewBag.tasks[i].Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@ViewBag.tasks[i].User.UserName</h6>
                         <p class="card-text" style="padding-bottom: 30px;">@ViewBag.tasks[i].Description</p>
-                        <button style="position:absolute; left:10px; bottom:10px;" type="button" class="btn btn-link" data-toggle="modal" data-target="#edit-task" onclick="fillValues('@ViewBag.tasks[i].Title', '@ViewBag.tasks[i].Description', '@ViewBag.tasks[i].Id', '@ViewBag.tasks[i].StatusId', '@ViewBag.tasks[i].TypeId')">Edit</button>
+                        <button style="font-weight: bold; position:absolute; left:10px; bottom:10px;" type="button" class="btn btn-link" data-toggle="modal" data-target="#edit-task" onclick="fillValues('@ViewBag.tasks[i].Title', '@ViewBag.tasks[i].Description', '@ViewBag.tasks[i].Id', '@ViewBag.tasks[i].StatusId', '@ViewBag.tasks[i].TypeId', '@ViewBag.tasks[i].UserId')">Edit</button>
                         <form method="post" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Delete">
                             <input type="hidden" name="Id" value="@ViewBag.tasks[i].Id" />
-                            <button style="position:absolute; right:10px; bottom:10px;" type="submit" class="btn btn-link">Delete</button>
+                            <button style="font-weight: bold; position: absolute; right: 10px; bottom: 10px;" type="submit" class="btn btn-link">Delete</button>
                         </form>
                         <!--<a href="#" class="card-link">Delete</a>-->
                     </div>
@@ -51,18 +57,28 @@
                 <div class="modal-body">
                     <input class="form-control" type="text" placeholder="Task Title" name="Title"><br />
                     <input class="form-control" type="text" placeholder="Task Description" name="Description"><br />
-                    <select class="custom-select" required name="TypeId">
+                    <select class="custom-select" required name="UserId">
                         <option value="">Link User To Task</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        @for (int i = 0; i < ViewBag.users.Count; i++)
+                        {
+                            <option value="@ViewBag.users[i].Id">@ViewBag.users[i].UserName</option>
+                        }
+                    </select>
+                    <br /><br />
+                    <select class="custom-select" required name="TypeId">
+                        <option value="">Select Task Type</option>
+                        @for (int i = 0; i < ViewBag.taskTypes.Count; i++)
+                        {
+                            <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
+                        }
                     </select>
                     <br /><br />
                     <select class="custom-select" required name="StatusId">
-                        <option value="">Select Task Progress</option>
-                        <option value="1">Todo</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Done</option>
+                        <option value="">Select Task Status</option>
+                        @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
+                        {
+                            <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
+                        }
                     </select>
                 </div>
                 <div class="modal-footer">
@@ -79,7 +95,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Update Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -90,20 +106,28 @@
                     <input class="form-control" type="text" placeholder="Task Title" id="task-title" name="Title"><br />
                     <input class="form-control" type="text" placeholder="Task Description" id="task-desc" name="Description"><br />
                     <input type="hidden" name="Id" id="task-id" />
-                    <input type="hidden" name="StatusId" id="status-id" />
-                    <input type="hidden" name="TypeId" id="type-id" />
-                    <select class="custom-select" id="task-user" required>
+                    <select class="custom-select" id="task-user" required name="UserId">
                         <option value="">Link User To Task</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        @for (int i = 0; i < ViewBag.users.Count; i++)
+                        {
+                            <option value="@ViewBag.users[i].Id">@ViewBag.users[i].UserName</option>
+                        }
                     </select>
                     <br /><br />
-                    <select class="custom-select" id="task-progress" required>
-                        <option value="">Select Task Progress</option>
-                        <option value="1">Todo</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Done</option>
+                    <select class="custom-select" id="task-type" required name="TypeId">
+                        <option value="">Select Task Type</option>
+                        @for (int i = 0; i < ViewBag.taskTypes.Count; i++)
+                        {
+                            <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
+                        }
+                    </select>
+                    <br /><br />
+                    <select class="custom-select" id="task-status" required name="StatusId">
+                        <option value="">Select Task Status</option>
+                        @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
+                        {
+                            <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
+                        }
                     </select>
                 </div>
                 <div class="modal-footer">

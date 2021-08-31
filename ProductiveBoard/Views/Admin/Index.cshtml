@@ -3,22 +3,23 @@
 *@
 @{
 }
-
+<h2 style="text-align: center; position: relative; margin: 35px 0;">Manage Users</h2>
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Role</th>
         </tr>
     </thead>
     <tbody>
-       @for (int i = 0; i < 10; i++)
-          { <tr>
-            <th scope="row">@i</th>
-            <td>MyName</td>
-            <td>Admin</td>
+        @for (int i = 0; i < ViewBag.users.Count; i++)
+        {
+            <tr>
+                <th scope="row">@(i+1)</th>
+                <td>@ViewBag.users[i].UserName</td>
+                <td>Admin</td>
             </tr>
-          }
+        }
     </tbody>
 </table>

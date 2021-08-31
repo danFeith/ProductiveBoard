@@ -1,0 +1,96 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@if (ViewBag.statuses != null && ViewBag.statuses.Count == 0)
+{
+    <i class="fa fa-warning fa-5x" style="text-align: center; width: 100%; position: relative; top: 132px; color: #7a7a7a; font-size: 130px;" aria-hidden="true"></i>
+    <div style="position: relative; top: 132px; text-align: center; width: 100%; font-size: 19px; color: #7a7a7a; font-weight: bold;">No Statuses To Display</div>
+}
+else
+{
+    <h2 style="text-align: center; position: relative; margin: 35px 0;">Manage Task Statuses</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col" style="text-align:center;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < ViewBag.statuses.Count; i++)
+            {
+                <tr>
+                    <th scope="row">@(i + 1)</th>
+                    <td>@ViewBag.statuses[i].Name</td>
+                    <td style="text-align:center;">
+                        <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="DeleteStatus">
+                            <button type="button" data-toggle="modal" data-target="#edit-status" class="btn btn-primary" style="padding: 1px 10px;" onclick="fillStatus('@ViewBag.statuses[i].Name', '@ViewBag.statuses[i].Id')">Edit</button>
+                            <input type="hidden" name="Id" value="@ViewBag.statuses[i].Id" />
+                            <button type="submit" class="btn btn-danger" style="padding: 1px 10px;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-status" style="position: fixed; left:60px; bottom:40px;">
+    Add New Status
+</button>
+
+<!-- New Status Modal -->
+<div class="modal fade" id="new-status" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="CreateStatus">
+                <div class="modal-body" style="width: 362px; margin: auto; position: relative; top: 10px;">
+                    <i class="fa fa-warning fa-2x" style="position: absolute;left: -27px;top: 20px;"></i>
+                    <input class="form-control" type="text" placeholder="Status Name" name="Name"><br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Status Modal -->
+<div class="modal fade" id="edit-status" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="UpdateStatus">
+                <div class="modal-body" style="width: 362px; margin: auto; position: relative; top: 10px;">
+                    <i class="fa fa-warning fa-2x" style="position: absolute;left: -27px;top: 20px;"></i>
+                    <input type="hidden" id="status-id" name="Id" />
+                    <input class="form-control" id="status-name" type="text" placeholder="Status Name" name="Name"><br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Admin/status.js"></script>

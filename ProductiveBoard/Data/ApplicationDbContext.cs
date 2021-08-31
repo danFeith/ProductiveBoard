@@ -10,7 +10,6 @@ namespace ProductiveBoard.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Task> Tasks { get; set; }
-        public DbSet<CompanyRole> CompanyRoles { get; set; }
         public DbSet<TaskType> TaskTypes { get; set; }
 
         public DbSet<TaskStatus> TaskStatuses { get; set; }
@@ -53,12 +52,6 @@ namespace ProductiveBoard.Data
             modelBuilder.Entity<TaskType>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<CompanyRole>()
-                 .HasKey(e => e.Id);
-            modelBuilder.Entity<CompanyRole>()
-                 .Property(e => e.Id)
-                 .ValueGeneratedOnAdd();
         }
     }
 }
