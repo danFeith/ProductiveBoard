@@ -1,28 +1,30 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
 <h2 style="text-align: center; position: relative; margin: 35px 0;">Manage Users</h2>
 <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Role</th>
+            <th scope="col" style="text-align:center;">Role</th>
         </tr>
     </thead>
     <tbody>
         @for (int i = 0; i < ViewBag.extendedUsers.Count; i++)
         {
+            @if (ViewBag.extendedUsers[i].Email == User.Identity.Name)
+            {
+            }
+            else
+            {
             <tr>
-                <th scope="row">@(i+1)</th>
-                <td>@ViewBag.extendedUsers[i].Email</td>
-                <td>@ViewBag.extendedUsers[i].Name</td>
-                    <!--<form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="UpdateUserRole">-->
-                        <!--SET Selected Role as the extendedUser[i].RoleId+Name-->
-                        <!--<select class="custom-select" id="select-role" required name="RoleId">
-                            @*@for (int j = 0; j < ViewBag.roles.Count; j++)
+                <th scope="row" style="line-height: 2;">@(i + 1)</th>
+                <td style="line-height: 2;">@ViewBag.extendedUsers[i].Email</td>
+                <td>
+                    <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="UpdateUserRole" style="display: flex; justify-content: center;">
+                        <select class="custom-select" id="select-role" required name="RoleId" style="width: 300px; margin: 0 21px;">
+                            @for (int j = 0; j < ViewBag.roles.Count; j++)
                             {
                                 @if (ViewBag.roles[j].Id == ViewBag.extendedUsers[i].RoleId)
                                 {
@@ -32,12 +34,14 @@
                                 {
                                     <option value="@ViewBag.roles[j].Id">@ViewBag.roles[j].Name</option>
                                 }
-                            }*@
+                            }
                         </select>
                         <input type="hidden" name="UserId" value="@ViewBag.extendedUsers[i].UserId" />
                         <button type="submit" class="btn btn-primary">Save</button>
-                    </form>-->
+                    </form>
+                </td>
             </tr>
+            }
         }
     </tbody>
 </table>

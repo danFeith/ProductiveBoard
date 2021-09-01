@@ -216,10 +216,21 @@ namespace ProductiveBoard.Controllers
             {
                 return RedirectToAction("Index", "Tasks");
             }
-            
-            
-            _context.Update(UserRole);
-            await _context.SaveChangesAsync();
+
+            IdentityUser currUser = new IdentityUser();
+            IList<string> currRoles = new List<string>();
+            currUser = await _userManager.FindByIdAsync(UserRole.UserId);
+            currRoles = await _userManager.GetRolesAsync(currUser);
+            await _userManager.RemoveFromRoleAsync(currUser, currRoles[0].ToUpper());
+
+            if (UserRole.RoleId == "1")
+            {
+                await _userManager.AddToRoleAsync(currUser, "ADMIN");
+            } else
+            {
+                await _userManager.AddToRoleAsync(currUser, "USER");
+            }
+            // await _context.SaveChangesAsync();
             return RedirectToAction("Index");
             
         }

@@ -1,10 +1,10 @@
 ﻿.desc {
-    background-color: #e6e6e6;
-    border-radius: 25px;
+    background-color: white;
+    border-radius: 0px;
 }
 
-.shadow {
-    text-shadow: 5px 5px #ff0000;
+.h3-shadow {
+    text-shadow: 2.2px 2.2px #c9c9c9
 }
 
 .map {

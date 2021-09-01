@@ -18,8 +18,9 @@
 <body>
     <header style="position: sticky; top: 0; z-index: 999;">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3" style="background-color: #3f51b5">
+            <canvas id="title" style="left: 20px; position: absolute; top: -8px;" width="130" height="50"></canvas>
             <div class="container">
-                <canvas id="title" style="height: 122px; left: 20px; position: absolute; top: -5px;"></canvas>
+                <a class="navbar-brand" asp-area="" asp-controller="Tasks" asp-action="Index">ProductiveBoard</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

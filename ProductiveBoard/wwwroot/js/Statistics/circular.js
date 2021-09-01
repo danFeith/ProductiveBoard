@@ -10,12 +10,44 @@ var svg = d3.select("#circular_chart")
 
 svg.append("circle").attr("cx", 130).attr("cy", 430).attr("r", 6).style("fill", "#F8766D")
 svg.append("circle").attr("cx", 250).attr("cy", 430).attr("r", 6).style("fill", "#00BA38")
-svg.append("text").attr("x", 150).attr("y", 430).text("Admin").style("font-size", "15px").attr("alignment-baseline", "middle")
-svg.append("text").attr("x", 270).attr("y", 430).text("User").style("font-size", "15px").attr("alignment-baseline", "middle")
+svg.append("text").attr("x", 150).attr("y", 430).text("User").style("font-size", "15px").attr("alignment-baseline", "middle")
+svg.append("text").attr("x", 270).attr("y", 430).text("Admin").style("font-size", "15px").attr("alignment-baseline", "middle")
 
 // create dummy data -> just one element per circle
-$.get(`https://localhost:5001/users/usersroles`, (data) => {
+$.get(`/users/usersroles`, (data) => {
     console.log(data);
+    // create a tooltip
+    var Tooltip = d3.select("#circular_chart")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+
+    // Three function that change the tooltip when user hover / move / leave a cell
+    var mouseover = function (d) {
+        Tooltip
+            .style("opacity", 1)
+        d3.select(this)
+            .style("stroke", "#3f51b5")
+            .style("opacity", 1)
+    }
+    var mousemove = function (d) {
+        Tooltip
+            .html(d.name)
+            .style("left", (d3.mouse(this)[0] + 70) + "px")
+            .style("top", (d3.mouse(this)[1]) + "px")
+    }
+    var mouseleave = function (d) {
+        Tooltip
+            .style("opacity", 0)
+        d3.select(this)
+            .style("stroke", "black")
+            .style("opacity", 0.8)
+    }
 
     // A scale that gives a X target position for each group
     var x = d3.scaleOrdinal()
@@ -43,7 +75,10 @@ $.get(`https://localhost:5001/users/usersroles`, (data) => {
         .call(d3.drag() // call specific function when circle is dragged
             .on("start", dragstarted)
             .on("drag", dragged)
-            .on("end", dragended));
+            .on("end", dragended))
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave);
 
     // Features of the forces applied to the nodes:
     var simulation = d3.forceSimulation()
@@ -62,22 +97,20 @@ $.get(`https://localhost:5001/users/usersroles`, (data) => {
                 .attr("cx", function (d) { return d.x; })
                 .attr("cy", function (d) { return d.y; })
         });
+
+    // What happens when a circle is dragged?
+    function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(.03).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+    function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(.03);
+        d.fx = null;
+        d.fy = null;
+    }
 });
-
-
-
-// What happens when a circle is dragged?
-function dragstarted(d) {
-    if (!d3.event.active) simulation.alphaTarget(.03).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-}
-function dragged(d) {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
-}
-function dragended(d) {
-    if (!d3.event.active) simulation.alphaTarget(.03);
-    d.fx = null;
-    d.fy = null;
-}
