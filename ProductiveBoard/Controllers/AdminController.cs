@@ -15,10 +15,12 @@ namespace ProductiveBoard.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -179,7 +181,7 @@ namespace ProductiveBoard.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            _context.Update(type);
+            // await _userManager.RemoveFromRoleAsync()
             await _context.SaveChangesAsync();
             return RedirectToAction("ManageType");
         }

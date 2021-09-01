@@ -14,55 +14,57 @@ svg.append("text").attr("x", 150).attr("y", 430).text("Admin").style("font-size"
 svg.append("text").attr("x", 270).attr("y", 430).text("User").style("font-size", "15px").attr("alignment-baseline", "middle")
 
 // create dummy data -> just one element per circle
-var data = [{ "name": "A", "role": 1 }, { "name": "B", "role": 1 }, { "name": "C", "role": 1 }, { "name": "D", "role": 1 }, { "name": "E", "role": 1 }, { "name": "F", "role": 1 },
-{ "name": "G", "role": 2 }, { "name": "H", "role": 2 }, { "name": "I", "role": 2 }, { "name": "J", "role": 2 }, { "name": "K", "role": 2 }, { "name": "L", "role": 2 },
-{ "name": "M", "role": 1 }, { "name": "N", "role": 1 }, { "name": "O", "role": 1 }];
+$.get(`https://localhost:5001/users/usersroles`, (data) => {
+    console.log(data);
 
-// A scale that gives a X target position for each group
-var x = d3.scaleOrdinal()
-    .domain([1, 2])
-    .range([50, 200])
+    // A scale that gives a X target position for each group
+    var x = d3.scaleOrdinal()
+        .domain([1, 2])
+        .range([50, 200])
 
-// A color scale
-var color = d3.scaleOrdinal()
-    .domain([1, 2])
-    .range(["#F8766D", "#00BA38"])
+    // A color scale
+    var color = d3.scaleOrdinal()
+        .domain([1, 2])
+        .range(["#F8766D", "#00BA38"])
 
-// Initialize the circle: all located at the center of the svg area
-var node = svg.append("g")
-    .selectAll("circle")
-    .data(data)
-    .enter()
-    .append("circle")
-    .attr("r", 29)
-    .attr("cx", width / 2)
-    .attr("cy", height / 2)
-    .style("fill", function (d) { return color(d.role) })
-    .style("fill-opacity", 0.8)
-    .attr("stroke", "black")
-    .style("stroke-width", 4)
-    .call(d3.drag() // call specific function when circle is dragged
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
+    // Initialize the circle: all located at the center of the svg area
+    var node = svg.append("g")
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("r", 29)
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .style("fill", function (d) { return color(d.role) })
+        .style("fill-opacity", 0.8)
+        .attr("stroke", "black")
+        .style("stroke-width", 4)
+        .call(d3.drag() // call specific function when circle is dragged
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
 
-// Features of the forces applied to the nodes:
-var simulation = d3.forceSimulation()
-    .force("x", d3.forceX().strength(0.5).x(function (d) { return x(d.role) }))
-    .force("y", d3.forceY().strength(0.1).y(height / 2))
-    .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-    .force("charge", d3.forceManyBody().strength(1)) // Nodes are attracted one each other of value is > 0
-    .force("collide", d3.forceCollide().strength(.1).radius(32).iterations(1)) // Force that avoids circle overlapping
+    // Features of the forces applied to the nodes:
+    var simulation = d3.forceSimulation()
+        .force("x", d3.forceX().strength(0.5).x(function (d) { return x(d.role) }))
+        .force("y", d3.forceY().strength(0.1).y(height / 2))
+        .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+        .force("charge", d3.forceManyBody().strength(1)) // Nodes are attracted one each other of value is > 0
+        .force("collide", d3.forceCollide().strength(.1).radius(32).iterations(1)) // Force that avoids circle overlapping
 
-// Apply these forces to the nodes and update their positions.
-// Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
-simulation
-    .nodes(data)
-    .on("tick", function (d) {
-        node
-            .attr("cx", function (d) { return d.x; })
-            .attr("cy", function (d) { return d.y; })
-    });
+    // Apply these forces to the nodes and update their positions.
+    // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
+    simulation
+        .nodes(data)
+        .on("tick", function (d) {
+            node
+                .attr("cx", function (d) { return d.x; })
+                .attr("cy", function (d) { return d.y; })
+        });
+});
+
+
 
 // What happens when a circle is dragged?
 function dragstarted(d) {

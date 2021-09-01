@@ -9,6 +9,7 @@ using ProductiveBoard.Data;
 using ProductiveBoard.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using System.Collections;
 
 namespace ProductiveBoard.Controllers
 {
@@ -61,6 +62,44 @@ namespace ProductiveBoard.Controllers
 
             ViewBag.tasks = tasks;
             return View();
+        }
+
+        // GET Tasks/TasksCountByStatus
+        [HttpGet]
+        public IEnumerable TasksCountByStatus()
+        {
+            var statusesCount = _context.Tasks
+                .GroupBy(t => new { Id = t.StatusId, Name = t.Status.Name })
+                .Select(g => new { Name = g.Key.Name, Count = g.Count() })
+                .ToList();
+
+            return statusesCount;
+        }
+
+        // GET Tasks/TasksCountByUser
+        [HttpGet]
+        public IEnumerable TasksCountByUser()
+        {
+            var usersCount = _context.Tasks
+                .Include(t => t.User)
+                .GroupBy(t => new { Id = t.UserId, Name = t.User.UserName })
+                .Select(g => new { Name = g.Key.Name, Value = g.Count() })
+                .ToList();
+
+            return usersCount;
+        }
+
+        // GET Tasks/TasksCountByType
+        [HttpGet]
+        public IEnumerable TasksCountByType()
+        {
+
+            var usersCount = _context.Tasks
+                .GroupBy(t => new { Id = t.TypeId, Name = t.Type.Name })
+                .Select(g => new { Name = g.Key.Name, Value = g.Count() })
+                .ToList();
+
+            return usersCount;
         }
 
         // GET /Tasks/Details/{id}
