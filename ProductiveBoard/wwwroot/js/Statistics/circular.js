@@ -1,17 +1,17 @@
 ﻿// set the dimensions and margins of the graph
 var width = 450
-var height = 450
+var height = 370
 
 // append the svg object to the body of the page
 var svg = d3.select("#circular_chart")
     .append("svg")
-    .attr("width", 450)
-    .attr("height", 450)
+    .attr("width", width)
+    .attr("height", height)
 
-svg.append("circle").attr("cx", 130).attr("cy", 430).attr("r", 6).style("fill", "#F8766D")
-svg.append("circle").attr("cx", 250).attr("cy", 430).attr("r", 6).style("fill", "#00BA38")
-svg.append("text").attr("x", 150).attr("y", 430).text("User").style("font-size", "15px").attr("alignment-baseline", "middle")
-svg.append("text").attr("x", 270).attr("y", 430).text("Admin").style("font-size", "15px").attr("alignment-baseline", "middle")
+svg.append("circle").attr("cx", 130).attr("cy", 330).attr("r", 6).style("fill", "#F8766D")
+svg.append("circle").attr("cx", 250).attr("cy", 330).attr("r", 6).style("fill", "#00BA38")
+svg.append("text").attr("x", 150).attr("y", 330).text("User").style("font-size", "15px").attr("alignment-baseline", "middle")
+svg.append("text").attr("x", 270).attr("y", 330).text("Admin").style("font-size", "15px").attr("alignment-baseline", "middle")
 
 // create dummy data -> just one element per circle
 $.get(`/users/usersroles`, (data) => {
