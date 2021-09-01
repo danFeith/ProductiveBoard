@@ -13,9 +13,9 @@ var svg = d3.select("#bar_chart")
         "translate(" + margin.left + "," + margin.top + ")");
 
 var data =
-    [{ Name: 'Ilan', Value: 16 },
-        { Name: 'Misha', Value: 40 },
-        { Name: 'Ofek', Value: 8 }
+    [{ Name: 'Ilan', Value: 12 },
+        { Name: 'Misha', Value: 22 },
+        { Name: 'Ofek', Value: 6 }
     ];
 
     // sort data
@@ -37,7 +37,7 @@ var data =
 
     // Add Y axis
     var y = d3.scaleLinear()
-        .domain([0, 50])
+        .domain([0, 30])
         .range([height, 0]);
     svg.append("g")
         .call(d3.axisLeft(y));
