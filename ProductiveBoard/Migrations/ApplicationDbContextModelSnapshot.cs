@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductiveBoard.Data;
 
-namespace ProductiveBoard.Data.Migrations
+namespace ProductiveBoard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200906102347_updated")]
-    partial class updated
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,24 +219,6 @@ namespace ProductiveBoard.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ProductiveBoard.Models.CompanyRole", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsManager")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompanyRoles");
-                });
-
             modelBuilder.Entity("ProductiveBoard.Models.Task", b =>
                 {
                     b.Property<long>("Id")
@@ -259,13 +239,15 @@ namespace ProductiveBoard.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StatusId");
 
                     b.HasIndex("TypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tasks");
                 });
@@ -364,6 +346,10 @@ namespace ProductiveBoard.Data.Migrations
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

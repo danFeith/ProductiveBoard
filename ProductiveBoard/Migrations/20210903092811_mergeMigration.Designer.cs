@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductiveBoard.Data;
 
-namespace ProductiveBoard.Data.Migrations
+namespace ProductiveBoard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200907164633_Users")]
-    partial class Users
+    [Migration("20210903092811_mergeMigration")]
+    partial class mergeMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -284,19 +284,6 @@ namespace ProductiveBoard.Data.Migrations
                     b.ToTable("TaskTypes");
                 });
 
-            modelBuilder.Entity("ProductiveBoard.Models.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -362,7 +349,7 @@ namespace ProductiveBoard.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductiveBoard.Models.User", "User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
