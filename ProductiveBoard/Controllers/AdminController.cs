@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 
 namespace ProductiveBoard.Controllers
 {
@@ -181,7 +178,7 @@ namespace ProductiveBoard.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            // await _userManager.RemoveFromRoleAsync()
+            _context.Update(type);
             await _context.SaveChangesAsync();
             return RedirectToAction("ManageType");
         }
@@ -226,13 +223,14 @@ namespace ProductiveBoard.Controllers
             if (UserRole.RoleId == "1")
             {
                 await _userManager.AddToRoleAsync(currUser, "ADMIN");
-            } else
+            }
+            else
             {
                 await _userManager.AddToRoleAsync(currUser, "USER");
             }
             // await _context.SaveChangesAsync();
             return RedirectToAction("Index");
-            
+
         }
 
         public async Task<List<IUser>> GetAuth()

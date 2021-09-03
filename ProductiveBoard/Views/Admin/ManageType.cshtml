@@ -40,7 +40,9 @@ else
 }
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-type" style="position: fixed; left:60px; bottom:40px;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-type" style="        position: fixed;
+        left: 60px;
+        bottom: 90px;">
     Add New Type
 </button>
 
@@ -57,7 +59,7 @@ else
             <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="CreateType">
                 <div class="modal-body" style="width: 362px; margin: auto; position: relative; top: 10px;">
                     <i class="fa fa-info-circle fa-2x" style="position: absolute;left: -27px;top: 20px;"></i>
-                    <input class="form-control" type="text" placeholder="Task-Type Name (eg. feature)" name="Name"><br />
+                    <input required class="form-control" type="text" placeholder="Task-Type Name (eg. feature)" name="Name"><br />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -82,7 +84,7 @@ else
                 <div class="modal-body" style="width: 362px; margin: auto; position: relative; top: 10px;">
                     <i class="fa fa-info-circle fa-2x" style="position: absolute;left: -27px;top: 20px;"></i>
                     <input type="hidden" name="Id" id="type-id" />
-                    <input class="form-control" id="type-name" type="text" placeholder="Task-Type Name (eg. feature)" name="Name"><br />
+                    <input class="form-control" id="type-name" type="text" placeholder="Task-Type Name (eg. feature)" name="Name" required><br />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

@@ -15,7 +15,6 @@ svg.append("text").attr("x", 270).attr("y", 330).text("Admin").style("font-size"
 
 // create dummy data -> just one element per circle
 $.get(`/users/usersroles`, (data) => {
-    console.log(data);
     // create a tooltip
     var Tooltip = d3.select("#circular_chart")
         .append("div")

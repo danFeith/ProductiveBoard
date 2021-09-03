@@ -11,10 +11,20 @@
 
 <style>
     iframe {
+        min-width: 0 !important;
+        min-height: 0 !important;
         position: fixed !important;
         right: 25px !important;
         top: 90px !important;
         box-shadow: 0px 0px 5px -2px;
+    }
+
+    .important-show {
+        display: inline-block !important;
+    }
+
+    .important-hide {
+        display: none !important;
     }
 </style>
 
@@ -22,13 +32,37 @@
 {
     @if (ViewBag.tasks != null && ViewBag.tasks.Count == 0)
     {
-        <i class="fa fa-list fa-5x" style="text-align: center; width: 100%; position: relative; top: 132px; color: #7a7a7a; font-size: 130px;" aria-hidden="true"></i>
-        <div style="position: relative; top: 132px; text-align: center; width: 100%; font-size: 19px; color: #7a7a7a; font-weight: bold;">No Tasks To Display</div>
+        <div style="position:absolute; width:100%; top:90px; left:0;">
+            <i class="fa fa-list fa-5x" style="text-align: center; width: 100%; position: relative; top: 132px; color: #7a7a7a; font-size: 130px;" aria-hidden="true"></i>
+            <div style="position: relative; top: 132px; text-align: center; width: 100%; font-size: 19px; color: #7a7a7a; font-weight: bold;">No Tasks To Display</div>
+        </div>
     }
+<form method="get" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Index" class="row" style="position: relative; padding: 14px 0px;">
+    <select id="task-status-id" class="custom-select col-lg-4 col-md-4" name="statusId" style="margin-left:10px;">
+        <option value="" selected>Search By Task Type</option>
+        @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
+        {
+            <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
+        }
+    </select>
+    <select id="task-type-id" class="custom-select col-lg-4 col-md-4" name="typeId" style="margin-left: 18px;">
+        <option value="" selected>Search By Task Status</option>
+        @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
+        {
+            <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
+        }
+    </select>
+    <div class="col-lg-1 col-md-1">
+        <button class="btn btn-primary">Search</button>
+    </div>
+    <div class="col-lg-1 col-md-1">
+        <button type="button" class="btn btn-danger" onclick="window.location.href = '/Tasks'">Cancel</button>
+    </div>
+</form>
     <div class="row">
         @for (var i = 0; ViewBag.tasks != null && i < ViewBag.tasks.Count; i++)
         {
-            <div class="row col-xl-3 col-lg-3">
+            <div class="row col-xl-3 col-lg-3 col-sm-6">
                 <div class="card" style="margin:10px; width:100%;">
                     <div class="card-body" style="margin-top: 23px;">
                         <span class="badge badge-pill badge-secondary" style="position:absolute;right:5px; top:5px;">@ViewBag.tasks[i].Type.Name</span>
@@ -49,7 +83,7 @@
     </div>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-task" style="position: fixed; left:60px; bottom:40px;">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-task" style="position: fixed; left:60px; bottom:90px;">
         Add New Task
     </button>
 
@@ -65,8 +99,8 @@
                 </div>
                 <form method="post" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Create">
                     <div class="modal-body">
-                        <input class="form-control" type="text" placeholder="Task Title" name="Title"><br />
-                        <input class="form-control" type="text" placeholder="Task Description" name="Description"><br />
+                        <input class="form-control" type="text" placeholder="Task Title" name="Title" required><br />
+                        <input class="form-control" type="text" placeholder="Task Description" name="Description" required><br />
                         <select class="custom-select" required name="UserId">
                             <option value="">Link User To Task</option>
                             @for (int i = 0; i < ViewBag.users.Count; i++)
@@ -75,7 +109,7 @@
                             }
                         </select>
                         <br /><br />
-                        <select class="custom-select" required name="TypeId">
+                        <select id="type-select" class="custom-select" required name="TypeId">
                             <option value="">Select Task Type</option>
                             @for (int i = 0; i < ViewBag.taskTypes.Count; i++)
                             {
@@ -113,8 +147,8 @@
                 <form method="post" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Update">
                     <div class="modal-body">
 
-                        <input class="form-control" type="text" placeholder="Task Title" id="task-title" name="Title"><br />
-                        <input class="form-control" type="text" placeholder="Task Description" id="task-desc" name="Description"><br />
+                        <input class="form-control" type="text" placeholder="Task Title" id="task-title" name="Title" required><br />
+                        <input class="form-control" type="text" placeholder="Task Description" id="task-desc" name="Description" required><br />
                         <input type="hidden" name="Id" id="task-id" />
                         <select class="custom-select" id="task-user" required name="UserId">
                             <option value="">Link User To Task</option>
@@ -148,7 +182,6 @@
             </div>
         </div>
     </div>
-
     <a class="twitter-timeline" href="https://twitter.com/dotnet" data-widget-id="661486332787580928" data-screen-name="cshtml" width="350" height="666" data-chrome="noborders">
     </a>
     
@@ -159,5 +192,5 @@ else
 {
     <h3>Unauthorized!</h3>
 }
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/Task/task.js"></script>

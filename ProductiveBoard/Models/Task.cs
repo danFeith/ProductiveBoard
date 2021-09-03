@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace ProductiveBoard.Models
 {
@@ -13,10 +8,10 @@ namespace ProductiveBoard.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public long StatusId { get; set; }
-        public TaskStatus Status { get; set; }
+        public virtual TaskStatus Status { get; set; }
         public long TypeId { get; set; }
-        public TaskType Type { get; set; }
+        public virtual TaskType Type { get; set; }
         public string UserId { get; set; }
-        public User User { get; set; }
+        public virtual IdentityUser User { get; set; }
     }
 }

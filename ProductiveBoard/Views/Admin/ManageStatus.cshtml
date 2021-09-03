@@ -40,7 +40,9 @@ else
 }
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-status" style="position: fixed; left:60px; bottom:40px;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-status" style="        position: fixed;
+        left: 60px;
+        bottom: 90px;">
     Add New Status
 </button>
 
@@ -57,7 +59,7 @@ else
             <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="CreateStatus">
                 <div class="modal-body" style="width: 362px; margin: auto; position: relative; top: 10px;">
                     <i class="fa fa-warning fa-2x" style="position: absolute;left: -27px;top: 20px;"></i>
-                    <input class="form-control" type="text" placeholder="Status Name" name="Name"><br />
+                    <input class="form-control" type="text" placeholder="Status Name" name="Name" required><br />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -82,7 +84,7 @@ else
                 <div class="modal-body" style="width: 362px; margin: auto; position: relative; top: 10px;">
                     <i class="fa fa-warning fa-2x" style="position: absolute;left: -27px;top: 20px;"></i>
                     <input type="hidden" id="status-id" name="Id" />
-                    <input class="form-control" id="status-name" type="text" placeholder="Status Name" name="Name"><br />
+                    <input class="form-control" id="status-name" type="text" placeholder="Status Name" name="Name" required><br />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

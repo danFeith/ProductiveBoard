@@ -2,7 +2,7 @@
     var canvas = document.getElementById("title");
     var ctx = canvas.getContext("2d");
     ctx.font = "30px Arial";
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "black";
     ctx.strokeText("ProductiveBoard", 10, 50);
 });
 
@@ -11,7 +11,6 @@ let isHot;
 let isDay;
 
 $.get(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=Tel-Aviv`, (data, status) => {
-    console.log(data.current.temp_c);
     if (data.current.temp_c > 22) {
         isHot = true;
     } else {

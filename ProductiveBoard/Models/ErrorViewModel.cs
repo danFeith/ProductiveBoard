@@ -1,5 +1,3 @@
-using System;
-
 namespace ProductiveBoard.Models
 {
     public class ErrorViewModel

@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using System.Collections;
 
 namespace ProductiveBoard.Controllers
 {
@@ -26,7 +25,7 @@ namespace ProductiveBoard.Controllers
 
         // GET /Tasks
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] long? typeId, [FromQuery] long? statusId)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -53,15 +52,57 @@ namespace ProductiveBoard.Controllers
                 {
                     if (tasks[currTaskIndex].UserId == users[currUserIndex].Id)
                     {
-                        tasks[currTaskIndex].User = new User();
-                        tasks[currTaskIndex].User.Id = users[currUserIndex].Id;
+                        tasks[currTaskIndex].UserId = users[currUserIndex].Id;
                         tasks[currTaskIndex].User.UserName = users[currUserIndex].UserName;
+                        tasks[currTaskIndex].UserId = users[currUserIndex].Id;
                     }
                 }
             }
 
             ViewBag.tasks = tasks;
+            bool isQuery = false;
+
+            IEnumerable<Models.Task> filteredTasks = _context.Tasks;
+
+            if (typeId.HasValue)
+            {
+                filteredTasks = _context.Tasks.Where(t => t.TypeId == typeId);
+                filteredTasks = filteredTasks.ToList();
+                isQuery = true;
+            }
+
+            if (statusId.HasValue)
+            {
+                filteredTasks = filteredTasks.Where(t => t.StatusId == statusId);
+                filteredTasks = filteredTasks.ToList();
+                isQuery = true;
+            }
+
+            if (isQuery)
+            {
+                ViewBag.tasks = filteredTasks;
+            }
+
             return View();
+        }
+
+        // GET Tasks/Filter?taskId=X&statusId=Y
+        [HttpGet]
+        public IEnumerable<Models.Task> Filter([FromQuery]long? typeId, [FromQuery] long? statusId)
+        {
+            IEnumerable<Models.Task> tasks = _context.Tasks;
+
+            if (typeId.HasValue)
+            {
+                tasks = _context.Tasks.Where(t => t.TypeId == typeId);
+            }
+
+            if (statusId.HasValue)
+            {
+                tasks = tasks.Where(t => t.StatusId == statusId);
+            }
+
+            return tasks;
         }
 
         // GET Tasks/TasksCountByStatus
@@ -81,7 +122,6 @@ namespace ProductiveBoard.Controllers
         public IEnumerable TasksCountByUser()
         {
             var usersCount = _context.Tasks
-                .Include(t => t.User)
                 .GroupBy(t => new { Id = t.UserId, Name = t.User.UserName })
                 .Select(g => new { Name = g.Key.Name, Value = g.Count() })
                 .ToList();
@@ -170,6 +210,7 @@ namespace ProductiveBoard.Controllers
 
             return View();
         }
+
 
         public async Task<List<IUser>> GetAuth()
         {

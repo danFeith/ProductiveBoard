@@ -18,7 +18,6 @@
 <body>
     <header style="position: sticky; top: 0; z-index: 999;">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3" style="background-color: #3f51b5">
-            <canvas id="title" style="left: 20px; position: absolute; top: -8px;" width="130" height="55"></canvas>
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Tasks" asp-action="Index">ProductiveBoard</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -57,17 +56,17 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="margin-bottom: 60px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-    <!--
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - ProductiveBoard - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted" style="background-color:#FAFAFA">
+        <canvas id="title" style="position: absolute; right: 30px; bottom: 15px;" width="130" height="55"></canvas>
+        <div class="container" style="position:relative;">
+            &copy; 2020 - ProductiveBoard - <a asp-area="" asp-controller="Utils" asp-action="About">About</a>
         </div>
-    </footer>-->
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
