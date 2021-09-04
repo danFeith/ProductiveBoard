@@ -25,7 +25,7 @@ namespace ProductiveBoard.Controllers
 
         // GET /Tasks
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] long? typeId, [FromQuery] long? statusId)
+        public async Task<IActionResult> Index([FromQuery] long? typeId, [FromQuery] long? statusId, [FromQuery] long? sprintId)
         {
             if (!User.Identity.IsAuthenticated)
             {

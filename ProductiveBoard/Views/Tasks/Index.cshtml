@@ -71,9 +71,9 @@
                         <h6 class="card-subtitle mb-2 text-muted">@ViewBag.tasks[i].User.UserName</h6>
                         <p class="card-text" style="padding-bottom: 20px;">@ViewBag.tasks[i].Description</p>
                         <div style="font-weight: bold">
-                            @for (var s = 0; s < 3; s++)
+                            @for (var s = 0; s < @ViewBag.tasks[i].sprintTasks.Count; s++)
                             {
-                                <span class="badge badge-pill badge-primary" style="width: 100%">sprint1</span>
+                            <span class="badge badge-pill badge-primary" style="width: 100%">@ViewBag.tasks[i].sprintTasks[s]</span>
                             }
                         </div>
                         <div style="width: 100%; margin-top: 40px">
