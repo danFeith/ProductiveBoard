@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
+using Task = ProductiveBoard.Models.Task;
 
 namespace ProductiveBoard.Controllers
 {
@@ -210,6 +211,106 @@ namespace ProductiveBoard.Controllers
                 _context.Remove(task);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+        }
+
+        //Sprints api for task view
+
+        // GET /Tasks/Sprints
+        [HttpGet]
+        public async Task<IActionResult> Sprints([FromQuery] long? taskId)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+
+            await GetAuth();
+            List<Models.Sprint> sprints = await _context.sprints.Include(a => a.sprintTasks).ThenInclude(st => st.task).ToListAsync();
+
+
+            ViewBag.sprints = sprints;
+            bool isQuery = false;
+
+            IEnumerable<Models.Sprint> filteredSprints = _context.sprints.Include(a => a.sprintTasks).ThenInclude(st => st.task);
+
+            if (taskId.HasValue)
+            {
+                filteredSprints = filteredSprints.Where(t => t.sprintTasks.Any(st => st.taskId == taskId));
+                filteredSprints = filteredSprints.ToList();
+                isQuery = true;
+            }
+
+            if (isQuery)
+            {
+                ViewBag.tasks = filteredSprints;
+            }
+
+            return View();
+        }
+
+        // POST /Tasks/AddSprint
+        [HttpPost]
+        public async Task<IActionResult> AddSprint(Sprint sprint)
+        {
+            _context.Add(sprint);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // PUT /Tasks/UpdateSprint
+        [HttpPost]
+        public async Task<IActionResult> UpdateSprint(Sprint sprint)
+        {
+            _context.Update(sprint);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // PUT /Tasks/AddTaskToSprint
+        [HttpPost]
+        public async Task<IActionResult> AddTaskToSprint(long? taskId, long? sprintId)
+        {
+            Task task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId);
+            Sprint sprint = await _context.sprints.Include(s => s.sprintTasks).ThenInclude(st => st.task).FirstOrDefaultAsync(t => t.Id == sprintId);
+            if (task == null || sprint == null)
+            {
+                return NotFound();
+            }
+
+            sprint.sprintTasks.Add(new SprintTask()
+            {
+                task = task,
+                taskId = (long)taskId,
+                sprint = sprint,
+                sprintId = (long)sprintId
+            });
+
+            _context.Update(sprint);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // DELETE /Tasks/DeleteSprint/{id}
+        [HttpPost]
+        public async Task<IActionResult> DeleteSprint(long Id)
+        {
+            Sprint sprint = new Sprint() { Id = Id };
+
+            if (Id == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                if (_context.sprints.Include(s => s.sprintTasks)
+                    .FirstOrDefault(s => s.Id == Id).sprintTasks.Count == 0)
+                {
+                    _context.Remove(sprint);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View();
             }
         }
 
