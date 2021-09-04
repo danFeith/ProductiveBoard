@@ -144,20 +144,19 @@
                         </select>
 
                         <h6 style="margin-top: 10px">select sprints</h6>
-                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
                             @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
                                 <div style="width: 25%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
+                                    <input class="sprints" size="10" type="checkbox" name="@ViewBag.sprints[k].Id" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
                                     <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }
-                        </div>
+                        
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" onclick="addTask()">Add Task</button>
+                        <button type="submit" class="btn btn-primary" onclick="addSprintsToTask()">Add Task</button>
                     </div>
                 </form>
             </div>

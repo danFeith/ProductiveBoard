@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
 using Task = ProductiveBoard.Models.Task;
+using System;
 
 namespace ProductiveBoard.Controllers
 {
@@ -180,10 +181,32 @@ namespace ProductiveBoard.Controllers
 
         // POST /Tasks
         [HttpPost]
-        public async Task<IActionResult> Create(Models.Task task)
+        public async Task<IActionResult> Create(Models.Task task, Dictionary<string, string> dataDict)
         {
             _context.Add(task);
             await _context.SaveChangesAsync();
+
+            List<long> sprintIds = dataDict.Values.ToList().GetRange(5, dataDict.Values.ToList().Count - 6).Select(a => (long)Int32.Parse(a)).ToList();
+
+            foreach (long sprintId in sprintIds)
+            {
+                Sprint sprint = await _context.sprints.Include(s => s.sprintTasks).ThenInclude(st => st.task).FirstOrDefaultAsync(t => t.Id == sprintId);
+                if (task == null || sprint == null)
+                {
+                    return NotFound();
+                }
+                sprint.sprintTasks.Add(new SprintTask()
+                {
+                    task = task,
+                    taskId = task.Id,
+                    sprint = sprint,
+                    sprintId = sprintId
+                });
+                _context.Update(sprint);
+            }
+            
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
