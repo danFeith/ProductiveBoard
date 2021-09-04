@@ -60,12 +60,13 @@ function addSprint() {
         data: sprintNameToAdd,
 
         success: function (response) {
-            //Do Something
         },
         error: function (xhr) {
             //Do Something to handle error
         }
     });
+    setTimeout("location.reload(true);", 500);
+
 }
 
 function updateTask() {
