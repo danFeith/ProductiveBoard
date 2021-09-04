@@ -41,7 +41,7 @@ namespace ProductiveBoard.Controllers
             ViewBag.extendedUsers = extendedUsers;
             List<TaskType> taskTypes = await _context.TaskTypes.ToListAsync();
             List<Models.TaskStatus> taskStatuses = await _context.TaskStatuses.ToListAsync();
-            List<Models.Task> tasks = await _context.Tasks.ToListAsync();
+            List<Models.Task> tasks = await _context.Tasks.Include(a => a.sprintTasks).ThenInclude(st => st.sprint).ToListAsync();
 
             ViewBag.users = users;
             ViewBag.taskTypes = taskTypes;
@@ -57,7 +57,7 @@ namespace ProductiveBoard.Controllers
                         tasks[currTaskIndex].UserId = users[currUserIndex].Id;
                     }
                 }
-            }
+            }   
 
             ViewBag.tasks = tasks;
             bool isQuery = false;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace ProductiveBoard.Models
 {
@@ -13,5 +14,7 @@ namespace ProductiveBoard.Models
         public virtual TaskType Type { get; set; }
         public string UserId { get; set; }
         public virtual IdentityUser User { get; set; }
+
+        public List<SprintTask> sprintTasks { get; set; }
     }
 }
