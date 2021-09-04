@@ -262,8 +262,8 @@ namespace ProductiveBoard.Controllers
                 string sprintName = await reader.ReadToEndAsync();
                 _context.Add(new Sprint() { name = sprintName });
                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
         }
 
         // PUT /Tasks/UpdateSprint
