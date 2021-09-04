@@ -7,6 +7,13 @@
     if (urlParams.get('statusId') !== null && urlParams.get('statusId') !== '') {
         $('#task-status-id').val(urlParams.get('statusId'));
     }
+    if (urlParams.get('sprintId') !== null && urlParams.get('sprintId') !== '') {
+        $('#task-sprint-id').val(urlParams.get('sprintId'));
+    }
+
+    if (urlParams.get('sprintId') !== null && urlParams.get('sprintId') !== '') {
+        $('#task-sprint-id').val(urlParams.get('sprintId'));
+    }
 
     $.get('/Tasks/TasksCountByType', (data) => {
         const mostUsed = { name: '', value: '' };
