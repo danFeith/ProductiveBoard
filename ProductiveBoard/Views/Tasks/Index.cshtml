@@ -52,7 +52,7 @@
             <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
         }
     </select>
-    <select id="task-type-id" class="custom-select col-lg-3 col-md-3" name="typeId" style="margin-left: 10px;">
+    <select id="task-sprint-id" class="custom-select col-lg-3 col-md-3" name="SprintId" style="margin-left: 10px;">
         <option value="" selected>Search By Sprint Name</option>
         @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
         {

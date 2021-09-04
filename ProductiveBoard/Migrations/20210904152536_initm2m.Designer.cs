@@ -10,8 +10,8 @@ using ProductiveBoard.Data;
 namespace ProductiveBoard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210903092811_mergeMigration")]
-    partial class mergeMigration
+    [Migration("20210904152536_initm2m")]
+    partial class initm2m
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,6 +221,36 @@ namespace ProductiveBoard.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ProductiveBoard.Models.Sprint", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("sprints");
+                });
+
+            modelBuilder.Entity("ProductiveBoard.Models.SprintTask", b =>
+                {
+                    b.Property<long>("sprintId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("taskId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("sprintId", "taskId");
+
+                    b.HasIndex("taskId");
+
+                    b.ToTable("sprintTasks");
+                });
+
             modelBuilder.Entity("ProductiveBoard.Models.Task", b =>
                 {
                     b.Property<long>("Id")
@@ -331,6 +361,21 @@ namespace ProductiveBoard.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductiveBoard.Models.SprintTask", b =>
+                {
+                    b.HasOne("ProductiveBoard.Models.Sprint", "sprint")
+                        .WithMany("sprintTasks")
+                        .HasForeignKey("sprintId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProductiveBoard.Models.Task", "task")
+                        .WithMany("sprintTasks")
+                        .HasForeignKey("taskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

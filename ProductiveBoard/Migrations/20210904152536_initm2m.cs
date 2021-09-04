@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProductiveBoard.Migrations
 {
-    public partial class mergeMigration : Migration
+    public partial class initm2m : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,19 @@ namespace ProductiveBoard.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sprints",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sprints", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,6 +226,30 @@ namespace ProductiveBoard.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "sprintTasks",
+                columns: table => new
+                {
+                    taskId = table.Column<long>(nullable: false),
+                    sprintId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sprintTasks", x => new { x.sprintId, x.taskId });
+                    table.ForeignKey(
+                        name: "FK_sprintTasks_sprints_sprintId",
+                        column: x => x.sprintId,
+                        principalTable: "sprints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_sprintTasks_Tasks_taskId",
+                        column: x => x.taskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -253,6 +290,11 @@ namespace ProductiveBoard.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_sprintTasks_taskId",
+                table: "sprintTasks",
+                column: "taskId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tasks_StatusId",
                 table: "Tasks",
                 column: "StatusId");
@@ -286,10 +328,16 @@ namespace ProductiveBoard.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "sprintTasks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "sprints");
+
+            migrationBuilder.DropTable(
+                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "TaskStatuses");
