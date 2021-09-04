@@ -37,28 +37,35 @@
             <div style="position: relative; top: 132px; text-align: center; width: 100%; font-size: 19px; color: #7a7a7a; font-weight: bold;">No Tasks To Display</div>
         </div>
     }
-    <form method="get" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Index" class="row" style="position: relative; padding: 14px 0px;">
-        <select id="task-status-id" class="custom-select col-lg-4 col-md-4" name="statusId" style="margin-left:10px;">
-            <option value="" selected>Search By Task Type</option>
-            @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
-            {
-                <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
-            }
-        </select>
-        <select id="task-type-id" class="custom-select col-lg-4 col-md-4" name="typeId" style="margin-left: 18px;">
-            <option value="" selected>Search By Task Status</option>
-            @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
-            {
-                <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
-            }
-        </select>
-        <div class="col-lg-1 col-md-1">
-            <button class="btn btn-primary">Search</button>
-        </div>
-        <div class="col-lg-1 col-md-1">
-            <button type="button" class="btn btn-danger" onclick="window.location.href = '/Tasks'">Cancel</button>
-        </div>
-    </form>
+<form method="get" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Index" class="row" style="position: relative; padding: 14px 0px;">
+    <select id="task-status-id" class="custom-select col-lg-3 col-md-3" name="statusId" style="margin-left:10px;">
+        <option value="" selected>Search By Task Type</option>
+        @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
+        {
+            <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
+        }
+    </select>
+    <select id="task-type-id" class="custom-select col-lg-3 col-md-3" name="typeId" style="margin-left: 10px;">
+        <option value="" selected>Search By Task Status</option>
+        @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
+        {
+            <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
+        }
+    </select>
+    <select id="task-sprint-id" class="custom-select col-lg-3 col-md-3" name="sprintId" style="margin-left: 10px;">
+        <option value="" selected>Search By Task Sprint</option>
+        @for (int i = 0; i < 3; i++)
+        {
+            <option value="@i"> @i </option>
+        }
+    </select>
+    <div class="col-lg-1 col-md-1">
+        <button class="btn btn-primary">Search</button>
+    </div>
+    <div class="col-lg-1 col-md-1">
+        <button type="button" class="btn btn-danger" onclick="window.location.href = '/Tasks'">Cancel</button>
+    </div>
+</form>
     <div class="row">
         @for (var i = 0; ViewBag.tasks != null && i < ViewBag.tasks.Count; i++)
         {
