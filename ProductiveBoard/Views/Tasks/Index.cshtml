@@ -78,10 +78,18 @@
                         <h6 class="card-subtitle mb-2 text-muted">@ViewBag.tasks[i].User.UserName</h6>
                         <p class="card-text" style="padding-bottom: 20px;">@ViewBag.tasks[i].Description</p>
                         <div style="font-weight: bold">
-                            @for (var s = 0; s < @ViewBag.tasks[i].sprintTasks.Count; s++)
+                            @for (var s = 0; s < @ViewBag.sprints.Count; s++)
                             {
-                            <span class="badge badge-pill badge-primary" style="width: 100%">@ViewBag.tasks[i].sprintTasks[s]</span>
+                                @for (var st = 0; st < @ViewBag.sprints[s].sprintTasks.Count; st++)
+                                {
+                                        @if (@ViewBag.sprints[s].sprintTasks[st].taskId == @ViewBag.tasks[i].Id)
+                                        {
+                                            <span class="badge badge-pill badge-primary" style="width: 100%">@ViewBag.sprints[s].name</span>
+                                        }
+                                }
                             }
+
+
                         </div>
                         <div style="width: 100%; margin-top: 40px">
                             <button style="font-weight: bold; position:absolute; left:10px; bottom:10px;" type="button" class="btn btn-link" data-toggle="modal" data-target="#edit-task" onclick="fillValues('@ViewBag.tasks[i].Title', '@ViewBag.tasks[i].Description', '@ViewBag.tasks[i].Id', '@ViewBag.tasks[i].StatusId', '@ViewBag.tasks[i].TypeId', '@ViewBag.tasks[i].UserId')">Edit</button>
@@ -144,21 +152,23 @@
                         </select>
 
                         <h6 style="margin-top: 10px">select sprints</h6>
+
+                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
                             @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
-                                <div style="width: 25%; font-weight:bold">
+                                <div style="width: 33%; font-weight:bold">
                                     <input class="sprints" size="10" type="checkbox" name="@ViewBag.sprints[k].Id" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
                                     <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }
-                        
-                    </div>
+                            </div>
+                        </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" onclick="addSprintsToTask()">Add Task</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" onclick="addSprintsToTask()">Add Task</button>
+                        </div>
+</form>
             </div>
         </div>
     </div>
@@ -173,48 +183,14 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Create">
+                <form method="post" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <input class="form-control" type="text" placeholder="Task Title" name="Title" required><br />
-                        <input class="form-control" type="text" placeholder="Task Description" name="Description" required><br />
-                        <select class="custom-select" required name="UserId">
-                            <option value="">Link User To Task</option>
-                            @for (int i = 0; i < ViewBag.users.Count; i++)
-                            {
-                                <option value="@ViewBag.users[i].Id">@ViewBag.users[i].UserName</option>
-                            }
-                        </select>
-                        <br /><br />
-                        <select id="type-select" class="custom-select" required name="TypeId">
-                            <option value="">Select Task Type</option>
-                            @for (int i = 0; i < ViewBag.taskTypes.Count; i++)
-                            {
-                                <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
-                            }
-                        </select>
-                        <br /><br />
-                        <select class="custom-select" required name="StatusId">
-                            <option value="">Select Task Status</option>
-                            @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
-                            {
-                                <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
-                            }
-                        </select>
-                        <h6 style="margin-top: 10px">select sprints</h6>
-                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
-                            @for (var k = 0; k < ViewBag.sprints.Count; k++)
-                            {
-                                <div style="width: 25%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
-                                    <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
-                                </div>
-                            }
-                        </div>
+                        <input id="sprintNameInput" class="form-control" type="text" placeholder="Sprint Name" name="Title" required><br />
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" onclick="addTask()">Add Task</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addSprint()">Add Sprint</button>
                     </div>
                 </form>
             </div>
@@ -265,7 +241,7 @@
                             @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
                                 <div style="width: 25%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
+                                    <input size="10" type="checkbox" name="@ViewBag.sprints[k].Id" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
                                     <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }

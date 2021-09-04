@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
 using Task = ProductiveBoard.Models.Task;
+using System.IO;
+using System.Text;
 using System;
 
 namespace ProductiveBoard.Controllers
@@ -212,9 +214,33 @@ namespace ProductiveBoard.Controllers
 
         // PUT /Tasks/Update
         [HttpPost]
-        public async Task<IActionResult> Update(Models.Task task)
+        public async Task<IActionResult> Update(Models.Task task, Dictionary<string, string> dataDict)
         {
             _context.Update(task);
+            await _context.SaveChangesAsync();
+
+            List<long> sprintIds = dataDict.Values.ToList().GetRange(6, dataDict.Values.ToList().Count - 7).Select(a => (long)Int32.Parse(a)).ToList();
+
+            foreach (long sprintId in sprintIds)
+            {
+                Sprint sprint = await _context.sprints.Include(s => s.sprintTasks).ThenInclude(st => st.task).FirstOrDefaultAsync(t => t.Id == sprintId);
+                if (task == null || sprint == null)
+                {
+                    return NotFound();
+                }
+                if (!sprint.sprintTasks.Any(st => st.taskId == task.Id))
+                {
+                    sprint.sprintTasks.Add(new SprintTask()
+                    {
+                        task = task,
+                        taskId = task.Id,
+                        sprint = sprint,
+                        sprintId = sprintId
+                    });
+                }
+                _context.Update(sprint);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -272,13 +298,20 @@ namespace ProductiveBoard.Controllers
             return View();
         }
 
+
+
         // POST /Tasks/AddSprint
         [HttpPost]
-        public async Task<IActionResult> AddSprint(Sprint sprint)
+        public async Task<IActionResult> AddSprint()
         {
-            _context.Add(sprint);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                string sprintName = await reader.ReadToEndAsync();
+                _context.Add(new Sprint() { name = sprintName });
+                await _context.SaveChangesAsync();
+            }
+
+            return View();
         }
 
         // PUT /Tasks/UpdateSprint
