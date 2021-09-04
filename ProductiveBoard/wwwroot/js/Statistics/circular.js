@@ -31,7 +31,7 @@ $.get(`/users/usersroles`, (data) => {
         Tooltip
             .style("opacity", 1)
         d3.select(this)
-            .style("stroke", "#3f51b5")
+            .style("stroke", "#8004a1")
             .style("opacity", 1)
     }
     var mousemove = function (d) {
