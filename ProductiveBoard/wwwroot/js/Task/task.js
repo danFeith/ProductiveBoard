@@ -34,20 +34,6 @@
             }
         });
     });
-
-    $.ajax({
-        url: "/Tasks/Sprints",
-        type: "get", //send it through get method
-        data: {
-            taskId: 1,
-        },
-        success: function (response) {
-            //Do Something
-        },
-        error: function (xhr) {
-            //Do Something to handle error
-        }
-    });
 });
 
 function fillValues(title, desc, id, statusId, typeId, userId) {
@@ -62,6 +48,24 @@ function fillValues(title, desc, id, statusId, typeId, userId) {
 }
 
 function addTask() {
+}
+
+function addSprint() {
+    var sprintNameToAdd = document.getElementById("sprintNameInput").value
+    $.ajax({
+        url: "/Tasks/AddSprint",
+        type: "post",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: sprintNameToAdd,
+
+        success: function (response) {
+            //Do Something
+        },
+        error: function (xhr) {
+            //Do Something to handle error
+        }
+    });
 }
 
 function updateTask() {

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using ProductiveBoard.Data;
 using ProductiveBoard.Models;
 using Task = ProductiveBoard.Models.Task;
+using System.IO;
+using System.Text;
 
 namespace ProductiveBoard.Controllers
 {
@@ -249,12 +251,18 @@ namespace ProductiveBoard.Controllers
             return View();
         }
 
+
+
         // POST /Tasks/AddSprint
         [HttpPost]
-        public async Task<IActionResult> AddSprint(Sprint sprint)
+        public async Task<IActionResult> AddSprint()
         {
-            _context.Add(sprint);
-            await _context.SaveChangesAsync();
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                string sprintName = await reader.ReadToEndAsync();
+                _context.Add(new Sprint() { name = sprintName });
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
