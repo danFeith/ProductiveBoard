@@ -37,28 +37,28 @@
             <div style="position: relative; top: 132px; text-align: center; width: 100%; font-size: 19px; color: #7a7a7a; font-weight: bold;">No Tasks To Display</div>
         </div>
     }
-<form method="get" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Index" class="row" style="position: relative; padding: 14px 0px;">
-    <select id="task-status-id" class="custom-select col-lg-4 col-md-4" name="statusId" style="margin-left:10px;">
-        <option value="" selected>Search By Task Type</option>
-        @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
-        {
-            <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
-        }
-    </select>
-    <select id="task-type-id" class="custom-select col-lg-4 col-md-4" name="typeId" style="margin-left: 18px;">
-        <option value="" selected>Search By Task Status</option>
-        @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
-        {
-            <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
-        }
-    </select>
-    <div class="col-lg-1 col-md-1">
-        <button class="btn btn-primary">Search</button>
-    </div>
-    <div class="col-lg-1 col-md-1">
-        <button type="button" class="btn btn-danger" onclick="window.location.href = '/Tasks'">Cancel</button>
-    </div>
-</form>
+    <form method="get" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Index" class="row" style="position: relative; padding: 14px 0px;">
+        <select id="task-status-id" class="custom-select col-lg-4 col-md-4" name="statusId" style="margin-left:10px;">
+            <option value="" selected>Search By Task Type</option>
+            @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
+            {
+                <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
+            }
+        </select>
+        <select id="task-type-id" class="custom-select col-lg-4 col-md-4" name="typeId" style="margin-left: 18px;">
+            <option value="" selected>Search By Task Status</option>
+            @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
+            {
+                <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
+            }
+        </select>
+        <div class="col-lg-1 col-md-1">
+            <button class="btn btn-primary">Search</button>
+        </div>
+        <div class="col-lg-1 col-md-1">
+            <button type="button" class="btn btn-danger" onclick="window.location.href = '/Tasks'">Cancel</button>
+        </div>
+    </form>
     <div class="row">
         @for (var i = 0; ViewBag.tasks != null && i < ViewBag.tasks.Count; i++)
         {
@@ -69,12 +69,20 @@
                         <span class="badge badge-pill badge-primary" style="position:absolute;left:5px; top:5px; background-color:#3f51b5">@ViewBag.tasks[i].Status.Name</span>
                         <h5 class="card-title">@ViewBag.tasks[i].Title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@ViewBag.tasks[i].User.UserName</h6>
-                        <p class="card-text" style="padding-bottom: 30px;">@ViewBag.tasks[i].Description</p>
-                        <button style="font-weight: bold; position:absolute; left:10px; bottom:10px;" type="button" class="btn btn-link" data-toggle="modal" data-target="#edit-task" onclick="fillValues('@ViewBag.tasks[i].Title', '@ViewBag.tasks[i].Description', '@ViewBag.tasks[i].Id', '@ViewBag.tasks[i].StatusId', '@ViewBag.tasks[i].TypeId', '@ViewBag.tasks[i].UserId')">Edit</button>
-                        <form method="post" id="delete-task-@ViewBag.tasks[i].Id" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Delete">
-                            <input type="hidden" name="Id" value="@ViewBag.tasks[i].Id" />
-                            <button style="font-weight: bold; position: absolute; right: 10px; bottom: 10px;" type="button" class="btn btn-link" onclick="deleteGeneric('task', '@ViewBag.tasks[i].Id')">Delete</button>
-                        </form>
+                        <p class="card-text" style="padding-bottom: 20px;">@ViewBag.tasks[i].Description</p>
+                        <div style="font-weight: bold">
+                            @for (var s = 0; s < 3; s++)
+                            {
+                                <span class="badge badge-pill badge-primary" style="width: 100%">sprint1</span>
+                            }
+                        </div>
+                        <div style="width: 100%; margin-top: 40px">
+                            <button style="font-weight: bold; position:absolute; left:10px; bottom:10px;" type="button" class="btn btn-link" data-toggle="modal" data-target="#edit-task" onclick="fillValues('@ViewBag.tasks[i].Title', '@ViewBag.tasks[i].Description', '@ViewBag.tasks[i].Id', '@ViewBag.tasks[i].StatusId', '@ViewBag.tasks[i].TypeId', '@ViewBag.tasks[i].UserId')">Edit</button>
+                            <form method="post" id="delete-task-@ViewBag.tasks[i].Id" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Delete">
+                                <input type="hidden" name="Id" value="@ViewBag.tasks[i].Id" />
+                                <button style="font-weight: bold; position: absolute; right: 10px; bottom: 10px;" type="button" class="btn btn-link" onclick="deleteGeneric('task', '@ViewBag.tasks[i].Id')">Delete</button>
+                            </form>
+                        </div>
                         <!--<a href="#" class="card-link">Delete</a>-->
                     </div>
                 </div>
@@ -85,6 +93,9 @@
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-task" style="position: fixed; left:60px; bottom:90px;">
         Add New Task
+    </button>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#new-sprint" style="position: fixed; left:200px; bottom:90px;">
+        Add New Sprint
     </button>
 
     <!-- New Task Modal -->
@@ -124,7 +135,76 @@
                                 <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
                             }
                         </select>
+                        <h6 style="margin-top: 10px">select sprints</h6>
+                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
+                            @for (var k = 0; k < 5; k++)
+                            {
+                                <div style="width: 25%; font-weight:bold">
+                                    <input size="10" type="checkbox" id="sprint @k" value="sprint @k">
+                                    <label for="sprint @k">sprint @k</label><br>
+                                </div>
+                            }
+                        </div>
                     </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" onclick="addTask()">Add Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Sprint Modal -->
+    <div class="modal fade" id="new-sprint" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Sprint</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Create">
+                    <div class="modal-body">
+                        <input class="form-control" type="text" placeholder="Task Title" name="Title" required><br />
+                        <input class="form-control" type="text" placeholder="Task Description" name="Description" required><br />
+                        <select class="custom-select" required name="UserId">
+                            <option value="">Link User To Task</option>
+                            @for (int i = 0; i < ViewBag.users.Count; i++)
+                            {
+                                <option value="@ViewBag.users[i].Id">@ViewBag.users[i].UserName</option>
+                            }
+                        </select>
+                        <br /><br />
+                        <select id="type-select" class="custom-select" required name="TypeId">
+                            <option value="">Select Task Type</option>
+                            @for (int i = 0; i < ViewBag.taskTypes.Count; i++)
+                            {
+                                <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
+                            }
+                        </select>
+                        <br /><br />
+                        <select class="custom-select" required name="StatusId">
+                            <option value="">Select Task Status</option>
+                            @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
+                            {
+                                <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
+                            }
+                        </select>
+                        <h6 style="margin-top: 10px">select sprints</h6>
+                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
+                            @for (var k = 0; k < 5; k++)
+                            {
+                                <div style="width: 25%; font-weight:bold">
+                                    <input size="10" type="checkbox" id="sprint @k" value="sprint @k">
+                                    <label for="sprint @k">sprint @k</label><br>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" onclick="addTask()">Add Task</button>
@@ -173,6 +253,16 @@
                                 <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
                             }
                         </select>
+                        <h6 style="margin-top: 10px">select sprints</h6>
+                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
+                            @for (var k = 0; k < 5; k++)
+                            {
+                                <div style="width: 25%; font-weight:bold">
+                                    <input size="10" type="checkbox" id="sprint @k" value="sprint @k">
+                                    <label for="sprint @k">sprint @k</label><br>
+                                </div>
+                            }
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -184,7 +274,7 @@
     </div>
     <a class="twitter-timeline" href="https://twitter.com/dotnet" data-widget-id="661486332787580928" data-screen-name="cshtml" width="350" height="666" data-chrome="noborders">
     </a>
-    
+
     <script async defer>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + "://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
 
 }
