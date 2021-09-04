@@ -73,7 +73,7 @@
                 <div class="card" style="margin:10px; width:100%;">
                     <div class="card-body" style="margin-top: 23px;">
                         <span class="badge badge-pill badge-secondary" style="position:absolute;right:5px; top:5px;">@ViewBag.tasks[i].Type.Name</span>
-                        <span class="badge badge-pill badge-primary" style="position:absolute;left:5px; top:5px; background-color:#3f51b5">@ViewBag.tasks[i].Status.Name</span>
+                        <span class="badge badge-pill badge-primary" style="position:absolute;left:5px; top:5px; background-color:#8004a1">@ViewBag.tasks[i].Status.Name</span>
                         <h5 class="card-title">@ViewBag.tasks[i].Title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@ViewBag.tasks[i].User.UserName</h6>
                         <p class="card-text" style="padding-bottom: 20px;">@ViewBag.tasks[i].Description</p>
@@ -152,22 +152,23 @@
                         </select>
 
                         <h6 style="margin-top: 10px">select sprints</h6>
+
                         <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
                             @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
                                 <div style="width: 33%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
+                                    <input class="sprints" size="10" type="checkbox" name="@ViewBag.sprints[k].Id" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
                                     <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" onclick="addTask()">Add Task</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" onclick="addSprintsToTask()">Add Task</button>
+                        </div>
+</form>
             </div>
         </div>
     </div>
@@ -240,7 +241,7 @@
                             @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
                                 <div style="width: 25%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
+                                    <input size="10" type="checkbox" name="@ViewBag.sprints[k].Id" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
                                     <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }
