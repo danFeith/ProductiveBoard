@@ -246,7 +246,7 @@ namespace ProductiveBoard.Controllers
                 ViewBag.tasks = filteredSprints;
             }
 
-            return View();
+            return Sprints(null).Result;
         }
 
         // POST /Tasks/AddSprint
