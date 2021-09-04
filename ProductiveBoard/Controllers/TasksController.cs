@@ -25,7 +25,9 @@ namespace ProductiveBoard.Controllers
 
         // GET /Tasks
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] long? typeId, [FromQuery] long? statusId)
+        public async Task<IActionResult> Index([FromQuery] long? typeId, 
+                                               [FromQuery] long? statusId, 
+                                               [FromQuery] long? sprintId)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -62,7 +64,7 @@ namespace ProductiveBoard.Controllers
             ViewBag.tasks = tasks;
             bool isQuery = false;
 
-            IEnumerable<Models.Task> filteredTasks = _context.Tasks;
+            IEnumerable<Models.Task> filteredTasks = _context.Tasks.Include(a => a.sprintTasks).ThenInclude(st => st.sprint);
 
             if (typeId.HasValue)
             {
@@ -78,6 +80,13 @@ namespace ProductiveBoard.Controllers
                 isQuery = true;
             }
 
+            if (sprintId.HasValue)
+            {
+                filteredTasks = filteredTasks.Where(t => t.sprintTasks.Any(st => st.sprintId == sprintId));
+                filteredTasks = filteredTasks.ToList();
+                isQuery = true;
+            }
+
             if (isQuery)
             {
                 ViewBag.tasks = filteredTasks;
@@ -88,9 +97,11 @@ namespace ProductiveBoard.Controllers
 
         // GET Tasks/Filter?taskId=X&statusId=Y
         [HttpGet]
-        public IEnumerable<Models.Task> Filter([FromQuery]long? typeId, [FromQuery] long? statusId)
+        public IEnumerable<Models.Task> Filter([FromQuery]long? typeId, 
+                                               [FromQuery] long? statusId,
+                                               [FromQuery] long? sprintId)
         {
-            IEnumerable<Models.Task> tasks = _context.Tasks;
+            IEnumerable<Models.Task> tasks = _context.Tasks.Include(a => a.sprintTasks).ThenInclude(st => st.sprint); ;
 
             if (typeId.HasValue)
             {
@@ -100,6 +111,12 @@ namespace ProductiveBoard.Controllers
             if (statusId.HasValue)
             {
                 tasks = tasks.Where(t => t.StatusId == statusId);
+            }
+
+            if (sprintId.HasValue)
+            {
+                tasks = tasks.Where(t => t.sprintTasks
+                                .Any(st => st.sprintId == sprintId));
             }
 
             return tasks;
