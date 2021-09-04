@@ -38,15 +38,22 @@
         </div>
     }
 <form method="get" enctype="multipart/form-data" asp-controller="Tasks" asp-action="Index" class="row" style="position: relative; padding: 14px 0px;">
-    <select id="task-status-id" class="custom-select col-lg-4 col-md-4" name="statusId" style="margin-left:10px;">
+    <select id="task-status-id" class="custom-select col-lg-3 col-md-3" name="statusId" style="margin-left:10px;">
         <option value="" selected>Search By Task Type</option>
         @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
         {
             <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
         }
     </select>
-    <select id="task-type-id" class="custom-select col-lg-4 col-md-4" name="typeId" style="margin-left: 18px;">
+    <select id="task-type-id" class="custom-select col-lg-3 col-md-3" name="typeId" style="margin-left: 10px;">
         <option value="" selected>Search By Task Status</option>
+        @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
+        {
+            <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
+        }
+    </select>
+    <select id="task-type-id" class="custom-select col-lg-3 col-md-3" name="typeId" style="margin-left: 10px;">
+        <option value="" selected>Search By Sprint Name</option>
         @for (int i = 0; i < ViewBag.taskStatuses.Count; i++)
         {
             <option value="@ViewBag.taskTypes[i].Id">@ViewBag.taskTypes[i].Name</option>
