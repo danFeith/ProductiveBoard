@@ -7,7 +7,9 @@ namespace ProductiveBoard.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<Sprint> sprints { get; set; }
         public DbSet<TaskType> TaskTypes { get; set; }
+        public DbSet<SprintTask> sprintTasks { get; set; }
         public DbSet<TaskStatus> TaskStatuses { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -36,6 +38,17 @@ namespace ProductiveBoard.Data
                 .HasOne(e => e.User)
                 .WithMany()
                 .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<SprintTask>()
+    .HasKey(at => new { at.sprintId, at.taskId });
+            modelBuilder.Entity<SprintTask>()
+                .HasOne(st => st.sprint)
+                .WithMany(s => s.sprintTasks)
+                .HasForeignKey(st => st.sprintId);
+            modelBuilder.Entity<SprintTask>()
+                .HasOne(st => st.task)
+                .WithMany(s => s.sprintTasks)
+                .HasForeignKey(st => st.taskId);
 
             modelBuilder.Entity<TaskStatus>()
                 .HasKey(e => e.Id);
