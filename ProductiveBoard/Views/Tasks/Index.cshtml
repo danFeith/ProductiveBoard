@@ -53,7 +53,7 @@
         }
     </select>
     <select id="task-sprint-id" class="custom-select col-lg-3 col-md-3" name="sprintId" style="margin-left: 10px;">
-        <option value="" selected>Search By Task Sprint</option>
+        <option value="" selected>Search By Sprint Name</option>
         @for (int i = 0; i < ViewBag.sprints.Count; i++)
         {
     <option value="@ViewBag.sprints[i].Id"> @ViewBag.sprints[i].name </option>
@@ -136,19 +136,20 @@
                         </select>
                         <br /><br />
                         <select class="custom-select" required name="StatusId">
-                        <option value="">Select Task Status</option>
-                        @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
-                        {
-                    <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>}
+                            <option value="">Select Task Status</option>
+                            @for (int i = 0; i < ViewBag.TaskStatuses.Count; i++)
+                            {
+                                <option value="@ViewBag.TaskStatuses[i].Id">@ViewBag.TaskStatuses[i].Name</option>
+                            }
                         </select>
 
                         <h6 style="margin-top: 10px">select sprints</h6>
                         <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
-                            @for (var k = 0; k < 5; k++)
+                            @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
                                 <div style="width: 25%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="sprint @k" value="sprint @k">
-                                    <label for="sprint @k">sprint @k</label><br>
+                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
+                                    <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }
                         </div>
@@ -202,11 +203,11 @@
                         </select>
                         <h6 style="margin-top: 10px">select sprints</h6>
                         <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
-                            @for (var k = 0; k < 5; k++)
+                            @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
                                 <div style="width: 25%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="sprint @k" value="sprint @k">
-                                    <label for="sprint @k">sprint @k</label><br>
+                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
+                                    <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }
                         </div>
@@ -262,11 +263,11 @@
                         </select>
                         <h6 style="margin-top: 10px">select sprints</h6>
                         <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start; ">
-                            @for (var k = 0; k < 5; k++)
+                            @for (var k = 0; k < ViewBag.sprints.Count; k++)
                             {
                                 <div style="width: 25%; font-weight:bold">
-                                    <input size="10" type="checkbox" id="sprint @k" value="sprint @k">
-                                    <label for="sprint @k">sprint @k</label><br>
+                                    <input size="10" type="checkbox" id="@ViewBag.sprints[k].Id" value=@ViewBag.sprints[k].Id>
+                                    <label for="@ViewBag.sprints[k].Id">@ViewBag.sprints[k].name</label><br>
                                 </div>
                             }
                         </div>
