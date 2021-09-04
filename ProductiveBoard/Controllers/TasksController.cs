@@ -93,7 +93,7 @@ namespace ProductiveBoard.Controllers
                 ViewBag.tasks = filteredTasks;
             }
 
-            return View();
+            return Sprints(null).Result;
         }
 
         // GET Tasks/Filter?taskId=X&statusId=Y
@@ -243,7 +243,7 @@ namespace ProductiveBoard.Controllers
 
             if (isQuery)
             {
-                ViewBag.tasks = filteredSprints;
+                ViewBag.sprints = filteredSprints;
             }
 
             return View();
